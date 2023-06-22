@@ -1,73 +1,109 @@
-~~~~0L-src/main/java/nl/tudelft/jpacman/level/Level.java
-    /**
- 	 * Registers a player on this level, assigning him to a starting position.
- 	 *
- 	 * @param p
- 	 *            The player to register.
- 	 */
- 	public void registerPlayer(Player p) {
+~~~~0L-EmployeeManagementSystem/src/main.py
+    class EmployeeManagementSystem:
+    def __init__(self):
+        self.employees = []
 
- 		players.add(p);
- 		Square square = startSquares.get(startSquareIndex);
+    def add_employee(self, employee):
+        self.employees.append(employee)
 
- 		// TODO put player on square.
+    def remove_employee(self, employee):
+        if employee in self.employees:
+            self.employees.remove(employee)
 
- 		startSquareIndex++;
- 		startSquareIndex %= startSquares.size();
- 	}
-~~~~
+    def get_employee_count(self):
+        return len(self.employees)
 
-~~~~0R-src/main/java/nl/tudelft/jpacman/level/Level.java
-    /**
- 	 * Registers a player on this level, assigning him to a starting position. A
- 	 * player can only be registered once, registering a player again will have
- 	 * no effect.
- 	 *
- 	 * @param p
- 	 *            The player to register.
- 	 */
- 	public void registerPlayer(Player p) {
- 		assert p != null;
+    def get_employee_by_id(self, employee_id):
+        for employee in self.employees:
+            if employee.id == employee_id:
+                return employee
+        return None
 
- 		if (players.contains(p)) {
- 			return;
- 		}
+    def get_employees_by_department(self, department):
+        department_employees = []
+        for employee in self.employees:
+            if employee.department == department:
+                department_employees.append(employee)
+        return department_employees
 
- 		players.add(p);
- 		Square square = startSquares.get(startSquareIndex);
+    def print_employee_details(self):
+        for employee in self.employees:
+            print("Employee ID:", employee.id)
+            print("Name:", employee.name)
+            print("Department:", employee.department)
+            print("Salary:", employee.salary)
+            print("=====================")
 
- 		p.occupy(square);
- 		startSquareIndex++;
- 		startSquareIndex %= startSquares.size();
- 	}
-~~~~
-
-~~~~1L-src/test/java/nl/tudelft/jpacman/level/LevelTest.java
 
 ~~~~
 
-~~~~1R-src/test/java/nl/tudelft/jpacman/level/LevelTest.java
-public class ExerciseSumArrayTests {
-    public class LevelTest {
+~~~~0R-CustomerManagementSystem/src/main.py
+    class EmployeeManagementSystem:
+    def __init__(self):
+        self.employees = []
 
- 	private Level level;
- 	private final NPC ghost = mock(NPC.class);
- 	private final Square square1 = mock(Square.class);
- 	private final Square square2 = mock(Square.class);
- 	private final Board board = mock(Board.class);
+    def add_employee(self, employee):
+        if employee is not None:
+            self.employees.append(employee)
+        else:
+            raise ValueError("Invalid employee object provided.")
 
- 	@Before
- 	public void setup() {
- 		level = new Level(board, Lists.newArrayList(ghost), Lists.newArrayList(
- 				square1, square2));
- 		when(ghost.getInterval()).thenReturn(100L);
- 	}
+    def remove_employee(self, employee):
+        if employee in self.employees:
+            self.employees.remove(employee)
+        else:
+            raise ValueError("Employee not found in the system.")
 
- 	@Test
- 	public void startStop() {
- 		Game game = mock(Game.class);
- 		level.start(game);
- 		level.stop();
- 		assertFalse(level.isInProgress());
- 	}
+    def get_employee_count(self):
+        return len(self.employees)
+
+    def get_employee_by_id(self, employee_id):
+        for employee in self.employees:
+            if employee.id == employee_id:
+                return employee
+        return None
+
+    def get_employees_by_department(self, department):
+        department_employees = []
+        for employee in self.employees:
+            if employee.department == department:
+                department_employees.append(employee)
+        return department_employees
+
+    def update_employee_salary(self, employee_id, new_salary):
+        employee = self.get_employee_by_id(employee_id)
+        if employee:
+            employee.salary = new_salary
+        else:
+            raise ValueError("Employee not found in the system.")
+
+    def get_average_salary(self):
+        if self.get_employee_count() > 0:
+            total_salary = sum(employee.salary for employee in self.employees)
+            average_salary = total_salary / self.get_employee_count()
+            return average_salary
+        else:
+            return None
+
+    def print_employee_details(self):
+        if self.get_employee_count() > 0:
+            for employee in self.employees:
+                print("Employee ID:", employee.id)
+                print("Name:", employee.name)
+                print("Department:", employee.department)
+                print("Salary:", employee.salary)
+                print("=====================")
+        else:
+            print("No employees found in the system.")
+
+*****Bot-Improper handling of edge cases and boundary conditions.
+- employee.manager = manager 
++ if employee is not None and manager is not None: 
++ 	 employee.manager = manager
+*****
+        def get_employee_by_id(self, employee_id):
+            for employee in self.employees:
+                if employee.id == employee_id:
+                    return employee
+            return None
 ~~~~

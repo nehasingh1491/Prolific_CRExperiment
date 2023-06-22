@@ -19,6 +19,7 @@ class Parser:
     def read_files_experiment(self, file_content):
         snippets = {}  # Snippet to return
         in_snippet = False
+        comment_flag = False
 
         for line in file_content:
             if line.startswith('~'):
@@ -32,15 +33,36 @@ class Parser:
                 else:
                     in_snippet = False
                 continue
+            elif line.startswith('*'): #added for comments
+                line = line.rstrip().replace("*", '')
+                if len(line) > 0:
+                    user_name = line.split("-")[0]
+                    comment = line.split("-")[1]
+                    comment_flag = True
+                else:
+                    comment_flag = False
+                continue
 
-            if in_snippet:  # if is code row
+            if comment_flag:
+                snippets[snippet_number]['comment_user'] = user_name
+                snippets[snippet_number]['comment'] = comment
+                if snippet_side == 'L':
+                    snippets[snippet_number]['code_suggestion_L'] += line[:-1] + "\\n"
+                else:
+                    snippets[snippet_number]['code_suggestion_R'] += line[:-1] + "\\n"
+
+            if in_snippet and not comment_flag:  # if is code row
                 if snippet_number not in snippets:
                     snippets[snippet_number] = {
                         'L': '',
                         'R': '',
                         'filename': filename,
                         'num_lines_L': 0,
-                        'num_lines_R': 0
+                        'num_lines_R': 0,
+                        'comment_user': None,
+                        'comment': None,
+                        'code_suggestion_L': '',
+                        'code_suggestion_R': ''
                     }
 
                 snippets[snippet_number][snippet_side] += line[:-1] + "\\n"

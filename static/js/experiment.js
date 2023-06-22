@@ -17,13 +17,19 @@ $(window).on("load", function(){
 });
 
 
-function initMergely(elementId, height, contextHeight, width, lineNumberLeft, contentLeft, lineNumberRight, contentRight, prefixLineCount, prefix, suffix) {
+function initMergely(elementId, height, contextHeight, width, lineNumberLeft, contentLeft, lineNumberRight, contentRight, prefixLineCount, prefix, suffix,
+	comment_user, comment, code_suggestion_L, code_suggestion_R) {
 	$(elementId).mergely({
 		width: width,
 		height: height,
 		wrap_lines: true,
 		fadein: '',
-		cmsettings: { readOnly: true, mode: "text/x-java", autoresize: false, lineWrapping: true, gutters: ["remarks", "CodeMirror-linenumbers"]},
+		cmsettings: { 
+			readOnly: true, 
+			mode: "text/x-java", 
+			autoresize: false, 
+			lineWrapping: true, 
+			gutters: ["remarks", "CodeMirror-linenumbers"]},
 		lhs: function(setValue) {
 			setValue(contentLeft);
 		},
@@ -32,23 +38,49 @@ function initMergely(elementId, height, contextHeight, width, lineNumberLeft, co
 		},
 		loaded: function() {
 			var el = $(elementId);
-			el.mergely('cm', 'lhs').options.firstLineNumber = lineNumberLeft;
-			el.mergely('cm', 'rhs').options.firstLineNumber = lineNumberRight;
-			el.mergely('cm', 'lhs').on("gutterClick", handleGutterClick);
-			el.mergely('cm', 'rhs').on("gutterClick", handleGutterClick);
-			el.mergely('cm', 'lhs').hunkId = elementId.replace('#compare', '');
-			el.mergely('cm', 'rhs').hunkId = elementId.replace('#compare', '');
-			el.mergely('cm', 'lhs').hunkSide = 0;
-			el.mergely('cm', 'rhs').hunkSide = 1;
+			var editor_left = el.mergely('cm', 'lhs');
+			var editor_right = el.mergely('cm', 'rhs');
+			editor_left.options.firstLineNumber = lineNumberLeft;
+			editor_right.options.firstLineNumber = lineNumberRight;
+			if (code_suggestion_L != "") {
+				editor_left.options.user = comment_user;
+				editor_left.options.comment = comment;
+				editor_left.options.code_suggestion = code_suggestion_L;
+				editor_left.on("change", openCommentBox);
+			}
+			if (code_suggestion_R != ""){
+				editor_right.options.user = comment_user;
+				editor_right.options.comment = comment;
+				editor_right.options.code_suggestion = code_suggestion_R;
+				editor_right.on("change", openCommentBox);
+			}
+			editor_right.on("gutterClick", handleGutterClick);
+			editor_left.hunkId = elementId.replace('#compare', '');
+			editor_right.hunkId = elementId.replace('#compare', '');
+			editor_left.hunkSide = 0;
+			editor_right.hunkSide = 1;
 			//store prefix/suffix settings only on the left side
-			el.mergely('cm', 'lhs').ps_height = contextHeight;
-			el.mergely('cm', 'lhs').ps_linecount = prefixLineCount;
-			el.mergely('cm', 'lhs').ps_prefix = prefix;
-			el.mergely('cm', 'lhs').ps_lhs = contentLeft;
-			el.mergely('cm', 'lhs').ps_rhs = contentRight;
-			el.mergely('cm', 'lhs').ps_suffix = suffix;
-			el.mergely('cm', 'lhs').ps_prefixActive = false;
-			// el.mergely('update', function() {ensureViewCorrectSized(elementId)});
+			editor_left.ps_height = contextHeight;
+			editor_left.ps_linecount = prefixLineCount;
+			editor_left.ps_prefix = prefix;
+			editor_left.ps_lhs = contentLeft;
+			editor_left.ps_rhs = contentRight;
+			editor_left.ps_suffix = suffix;
+			editor_left.ps_prefixActive = false;
+
+			// Add line widget
+			/**
+			var lineNumber = 10; // Line number where you want to add the line widget
+			var content = "This is a line widget";
+
+			var node = document.createElement("div");
+			node.textContent = content;
+
+			var lineWidget = editor_right.addLineWidget(lineNumber - 1, makeMarker("Review comments"), {coverGutter: true, noHScroll: true});
+
+			// Optional: Set the code in the editor
+			editor_right.setValue(contentRight);
+			 */
 		}
 	});
 }
@@ -75,10 +107,228 @@ function makeMarker(msg){
 	icon.innerHTML = "!!";
 	icon.className = "lint-error-icon";
 	var name = marker.appendChild(document.createElement("span"))
-	name.innerHTML = "<b>You: </b>";
+	name.innerHTML = "<b>Alice: </b>";
 	marker.appendChild(document.createTextNode(msg));
 	marker.className = "lint-error";
+
+	// Add a line break after the buttons
+	marker.appendChild(document.createElement("br"));
+	marker.appendChild(document.createElement("br"));
+
 	return marker;
+}
+
+function makeTextArea(user, user_comment){
+	var marker = document.createElement("div");
+	marker.style.border = "1px solid grey";
+	marker.style.borderRadius = "8px";
+	marker.style.padding = "5px";
+	marker.style.margin = "15px";
+
+	var headerdiv = document.createElement("div");
+	var img = headerdiv.appendChild(document.createElement("img"));
+	img.src = "/static/avatar.png";
+	img.alt = "User Avatar";
+	img.className = "avatar";
+	img.style.width = "30px";
+	img.style.height = "30px";
+	img.style.borderRadius = "55%";
+	var username = headerdiv.appendChild(document.createElement("span"));
+	username.innerHTML = user;
+	username.style.fontWeight = "bold";
+	username.style.marginLeft = "15px";
+	username.style.fontSize = "16px";
+	username.style.fontFamily = "Helvetica";
+	var timestamp = headerdiv.appendChild(document.createElement("span"));
+	timestamp.innerHTML = "20 mins ago";
+	timestamp.style.fontSize = "12px";
+	timestamp.style.color = "grey";
+	timestamp.style.marginLeft = "10px";
+	headerdiv.style.display = "flex";
+	headerdiv.style.alignItems = "center";
+	marker.appendChild(headerdiv);
+
+	marker.appendChild(document.createElement("br"));
+	var comment = marker.appendChild(document.createElement("span"));
+	comment.innerHTML = user_comment;
+	comment.style.fontSize = "15px";
+	comment.style.fontFamily = "Arial";
+
+	marker.appendChild(document.createElement("br"));
+	marker.appendChild(document.createElement("br"));
+	marker.appendChild(document.createElement("br"));
+
+	var headerdiv_sugg = document.createElement("div");
+	var img1 = headerdiv_sugg.appendChild(document.createElement("img"));
+	img1.src = "/static/avatar.png";
+	img1.alt = "User Avatar";
+	img1.className = "avatar";
+	img1.style.width = "30px";
+	img1.style.height = "30px";
+	img1.style.borderRadius = "55%";
+	var username = headerdiv_sugg.appendChild(document.createElement("span"));
+	username.className = "username";
+	username.innerHTML = user;
+	username.style.fontWeight = "bold";
+	username.style.marginLeft = "15px";
+	username.style.fontSize = "16px";
+	username.style.fontFamily = "Helvetica";
+	var timestamp1 = headerdiv_sugg.appendChild(document.createElement("span"));
+	timestamp1.innerHTML = "20 mins ago";
+	timestamp1.style.fontSize = "12px";
+	timestamp1.style.color = "grey";
+	timestamp1.style.marginLeft = "10px";
+	headerdiv_sugg.style.display = "flex";
+	headerdiv_sugg.style.alignItems = "center";
+	marker.appendChild(headerdiv_sugg);
+	//marker.appendChild(document.createElement("br"));
+
+	var list = document.createElement("ul");
+	list.style.listStyleType = "none";
+	list.style.padding = "0";
+	list.style.margin = "10px 20px";
+	list.style.border = "1px solid grey";
+	list.style.borderRadius = "5px";
+	var item1 = list.appendChild(document.createElement("li"));
+	item1.style.borderBottom = "1px solid grey";
+	item1.style.padding = "5px";
+	var icon = item1.appendChild(document.createElement("span"));
+	icon.innerHTML = "Suggested changes";
+	icon.style.fontSize = "14px";
+	icon.style.color = "grey";
+	icon.style.padding= "8px 16px";
+	icon.style.fontFamily = "Noto sans-serif";
+	var item2 = list.appendChild(document.createElement("li"));
+	var textArea = item2.appendChild(document.createElement("textarea"));
+	textArea.id = "codeEditor";
+	textArea.style.resize = "none";
+	item2.style.borderBottom = "1px solid grey";
+	var item3 = list.appendChild(document.createElement("li"));
+	item3.style.padding = "5px";
+	item3.style.textAlign = "right";
+	var button1 = item3.appendChild(document.createElement("button"));
+	button1.innerHTML = "Commit Changes";
+	button1.style.borderRadius= "5px";
+	button1.style.backgroundColor= "#e7e7e7";
+    button1.style.color= "black";
+    button1.style.fontSize= "14px";
+	button1.style.border = "1px solid grey";
+	marker.appendChild(list);
+
+	button1.onclick = function(){
+		if (button1.innerHTML == "Commit Changes"){
+			logData("commit changes", "yes");
+			button1.innerHTML = "Undo Commit";
+		}else if (button1.innerHTML == "Undo Commit"){
+			logData("undo commit", "yes");
+			button1.innerHTML = "Commit Changes";
+		}
+	}
+
+	var user_reply = document.createElement("div");
+	user_reply.style.marginBottom = "10px";
+	user_reply.style.backgroundColor = "#F5F5F5"
+	user_reply.style.marginLeft = "-5px";
+	user_reply.style.marginRight = "-5px";
+	var img2= user_reply.appendChild(document.createElement("img"));
+	img2.src = "/static/neutral_avatar.png";
+	img2.alt = "User Avatar";
+	img2.className = "avatar";
+	img2.style.width = "30px";
+	img2.style.height = "30px";
+	img2.style.borderRadius = "55%";
+	var textArea = user_reply.appendChild(document.createElement("textarea"));
+	textArea.id = "user_reply";
+	textArea.placeholder = "Reply...";
+	textArea.style.height = "20px";
+	textArea.style.width = "90%";
+	textArea.style.marginLeft = "5px";
+	textArea.style.border = "1px solid grey";
+	textArea.style.borderRadius = "5px";
+	textArea.style.resize = "none";
+	var button2 = user_reply.appendChild(document.createElement("button"));
+	button2.innerHTML = "Comment";
+	button2.type = "button";
+	button2.style.borderRadius= "5px";
+    button2.style.backgroundColor= "#e7e7e7";
+    button2.style.color= "black";
+    button2.style.fontSize= "14px";
+	button2.style.border = "1px solid grey";
+	button2.style.marginTop = "5px";
+	button2.style.marginLeft = "15px";
+	user_reply.style.alignItems = "center";
+	marker.appendChild(user_reply);
+
+	var user_reply1 = document.createElement("div");
+	user_reply1.style.marginBottom = "10px";
+	user_reply1.style.backgroundColor = "#F5F5F5"
+	user_reply1.style.marginLeft = "-5px";
+	user_reply1.style.marginRight = "-5px";
+	var div = document.createElement("div");
+	div.style.display= "inline-flex";
+  	div.style.alignItems= "center"; 
+	var img3= div.appendChild(document.createElement("img"));
+	img3.src = "/static/neutral_avatar.png";
+	img3.alt = "User Avatar";
+	img3.className = "avatar";
+	img3.style.width = "30px";
+	img3.style.height = "30px";
+	img3.style.borderRadius = "55%";
+	var para_reply = div.appendChild(document.createElement("p"));
+	para_reply.id = "para_reply";
+	para_reply.style.fontSize = "15px";
+	para_reply.style.fontFamily = "Arial";
+	para_reply.style.marginLeft = "25px";
+	para_reply.style.wordBreak = "break-all";
+	var button3 = div.appendChild(document.createElement("button"));
+	button3.innerHTML = "Edit";
+	button3.type = "button";
+	button3.style.borderRadius= "5px";
+    button3.style.backgroundColor= "#e7e7e7";
+    button3.style.color= "black";
+    button3.style.fontSize= "14px";
+	button3.style.border = "1px solid grey";
+	button3.style.marginTop = "5px";
+	button3.style.marginLeft = "15px";
+	button3.style.marginRight = "15px";
+	user_reply1.appendChild(div);
+	user_reply1.style.display = "none";
+	marker.appendChild(user_reply1);
+
+	button2.onclick = function(){
+		var reply = document.getElementById("user_reply").value;
+		logData("user_reply", reply);
+		user_reply.style.display = "none";
+		para_reply.innerHTML = reply;
+		user_reply1.style.display = "block";
+	};
+
+	button3.onclick = function(){
+		user_reply.style.display = "block";
+		user_reply1.style.display = "none";
+	};
+	
+	return marker;
+}
+
+function openCommentBox(instance, lineNumber, gutter, clickEvent){
+
+	var user = instance.options.user;
+	var comment = instance.options.comment;
+	var line_widget = instance.addLineWidget(20, makeTextArea(user, comment), {above: true, noHScroll: true});
+
+	// Get the textarea element and its value
+	var code = instance.options.code_suggestion;
+
+    // Initialize CodeMirror with the textarea and set the code
+    var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("codeEditor"), {
+      lineNumbers: true,
+	  firstLineNumber: 20
+    });
+    myCodeMirror.setValue(code); // Set the initial code in the editor
+
+	myCodeMirror.addLineClass(1, "background", "mark");
+	myCodeMirror.addLineClass(2, "background", "mark");
 }
 
 function handleGutterClick(instance, lineNumber, gutter, clickEvent){

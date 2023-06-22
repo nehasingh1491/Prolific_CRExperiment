@@ -159,6 +159,7 @@ def run_experiment():
                                              title='Code Review Experiment',
                                              codes=codes,
                                              md_body=experiment_body))
+
         resp.set_cookie('experiment-init-questions', 'init-questions-done')
         resp.set_cookie('experiment-experimentCRtype', cr_file)
         resp.set_cookie('experiment-experimentCRistest', str(is_test))
@@ -182,9 +183,9 @@ def experiment_concluded():
 
     log_data(str(user_id), "end", "cr_experiment")
     if exp_is_done != 'DONE':
-        post_questions = read_files("post_questions.txt")
+        #post_questions = read_files("post_questions.txt")
         resp = make_response(render_template('experiment_concluded.html',
-                                             post_questions=post_questions,
+                                             #post_questions=post_questions,
                                              title="Post Questions"))
         return resp
     else:
@@ -232,10 +233,9 @@ def conclusion():
     elif exp_type == 'files_experiment2' and exp_is_test == 'False':
         experiments_concluded['CR2-test'] += 1
 
-    conclusion_text = read_files("conclusion.txt")
-    return render_template("conclusion.html", title='conclusion',
-                           conclusion=conclusion_text)
-
+    #conclusion_text = read_files("conclusion.txt")
+    return render_template("conclusion.html", title='conclusion')
+                           #,conclusion=conclusion_text)
 
 def build_experiments(experiment_snippets):
     codes = []
@@ -254,6 +254,10 @@ def build_experiments(experiment_snippets):
             "prefix_line_count": 1,
             "prefix_escaped": 1,
             "suffix_escaped": 1,
+            "comment_user": experiment_snippet['comment_user'],
+            "comment": experiment_snippet['comment'],
+            "code_suggestion_L": experiment_snippet['code_suggestion_L'],
+            "code_suggestion_R": experiment_snippet['code_suggestion_R'],
         })
     return codes
 
@@ -326,3 +330,13 @@ def read_experiment(file_name):
 
 def contains_html_tags(string_to_check):
     return any(tag in string_to_check for tag in html_tags)
+
+@app.route('/data_policy', methods=['GET', 'POST'])
+def data_policy():
+    """
+    Before the experiment, the participant should agree with the data handling policy
+    Return the page "templates/data_policy.html"
+    """
+    resp = make_response(render_template("data_policy.html", title='Data Policy'))
+    resp.set_cookie('data_policy', 'open')
+    return resp

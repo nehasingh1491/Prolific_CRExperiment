@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../Learn_flask"
+		},
+		{
+			"path": "../../Data_scraping"
+		}
+	],
+	"settings": {}
+}

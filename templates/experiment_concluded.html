@@ -5,7 +5,8 @@
  {% block content %}
      <p>Please answer the following questions after having concluded the experiment:</p><br>
      <form action="feedback" method="post" id="current_form">
-         {{ post_questions|safe }}
+         <!-- {{ post_questions|safe }} -->
+         <h1>Questions</h1>
          <br>
          <button type="submit" id="submitter" class="button blue">Next</button>
      </form>

@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../fse22-fregnan/tool"
+		},
+		{
+			"path": "../Data_scraping"
+		}
+	],
+	"settings": {}
+}
