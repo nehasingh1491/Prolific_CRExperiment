@@ -38,6 +38,10 @@ class Parser:
                 if len(line) > 0:
                     user_name = line.split("-")[0]
                     comment = line.split("-")[1]
+                    comment_lineNumber = line.split("-")[2]
+                    subtracted_lineNumber = line.split("-")[3]
+                    added_lineNumber = line.split("-")[4]
+                    total_lineNumber = line.split("-")[5]
                     comment_flag = True
                 else:
                     comment_flag = False
@@ -46,6 +50,10 @@ class Parser:
             if comment_flag:
                 snippets[snippet_number]['comment_user'] = user_name
                 snippets[snippet_number]['comment'] = comment
+                snippets[snippet_number]['comment_lineNumber'] = comment_lineNumber
+                snippets[snippet_number]['subtracted_lineNumber'] = subtracted_lineNumber
+                snippets[snippet_number]['added_lineNumber'] = added_lineNumber
+                snippets[snippet_number]['total_lineNumber'] = total_lineNumber
                 if snippet_side == 'L':
                     snippets[snippet_number]['code_suggestion_L'] += line[:-1] + "\\n"
                 else:
@@ -61,6 +69,10 @@ class Parser:
                         'num_lines_R': 0,
                         'comment_user': None,
                         'comment': None,
+                        'comment_lineNumber': 0,
+                        'subtracted_lineNumber': 0,
+                        'added_lineNumber': 0,
+                        'total_lineNumber': 0,
                         'code_suggestion_L': '',
                         'code_suggestion_R': ''
                     }
