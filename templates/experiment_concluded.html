@@ -5,9 +5,65 @@
  {% block content %}
      <p>Please answer the following questions after having concluded the experiment:</p><br>
      <form action="feedback" method="post" id="current_form">
-         <!-- {{ post_questions|safe }} -->
-         <h1>Questions</h1>
-         <br>
+        <fieldset id="fieldset_question_0" class="container_radio_buttons"><p>Why did you choose to accept the code suggestions provided?</p>
+            <label><textarea id="q0" name="feedback_0" style="height: 50px; width: 500px"></textarea></label>
+        </fieldset><br>
+        <fieldset id="fieldset_question_1" class="container_radio_buttons"><p>Why did you choose to not accept the code suggestions provided?</small></p>
+            <label><textarea id="q1" name="feedback_1" style="height: 50px; width: 500px"></textarea></label>
+        </fieldset><br>
+        <fieldset id="fieldset_question_1" class="container_radio_buttons"><p>What is the level of confidence you feel
+             regarding the code suggestion provided. On a scale of 1 to 5, with 1 being the least confident and 5 being the most confident, please
+              indicate how confident you feel about the code suggestion.</small></p><br>
+            <!-- <label><textarea id="q1" name="feedback_1" style="height: 50px"></textarea></label> -->
+            <ul class='likert'>
+            <li>
+                <input type="radio" name="likert" value="strong_agree">
+                <label>Strongly agree</label>
+            </li>
+            <li>
+                <input type="radio" name="likert" value="strong_agree">
+                <label>Agree</label>
+            </li>
+            <li>
+                <input type="radio" name="likert" value="strong_agree">
+                <label>Neutral</label>
+            </li>
+            <li>
+                <input type="radio" name="likert" value="disagree">
+                <label>Disagree</label>
+            </li>
+            <li>
+                <input type="radio" name="likert" value="strong_agree">
+                <label>Strongly disagree</label>
+            </li>
+            </ul>
+        </fieldset><br>
+        <fieldset id="fieldset_question_1" class="container_radio_buttons"><p>How much do you trust </small></p><br>
+           <!-- <label><textarea id="q1" name="feedback_1" style="height: 50px"></textarea></label> -->
+           <ul class='likert'>
+           <li>
+               <input type="radio" name="likert" value="strong_agree">
+               <label>Strongly agree</label>
+           </li>
+           <li>
+               <input type="radio" name="likert" value="strong_agree">
+               <label>Agree</label>
+           </li>
+           <li>
+               <input type="radio" name="likert" value="strong_agree">
+               <label>Neutral</label>
+           </li>
+           <li>
+               <input type="radio" name="likert" value="disagree">
+               <label>Disagree</label>
+           </li>
+           <li>
+               <input type="radio" name="likert" value="strong_agree">
+               <label>Strongly disagree</label>
+           </li>
+           </ul>
+       </fieldset><br>
+        <br>
          <button type="submit" id="submitter" class="button blue">Next</button>
      </form>
 {% endblock %}

@@ -18,7 +18,7 @@ $(window).on("load", function(){
 
 
 function initMergely(elementId, height, contextHeight, width, lineNumberLeft, contentLeft, lineNumberRight, contentRight, prefixLineCount, prefix, suffix,
-	comment_user, comment, code_suggestion_L, code_suggestion_R) {
+	comment_user, comment, comment_lineNumber, sub_lineNumber, add_lineNumber, total_lineNumber, code_suggestion_L, code_suggestion_R) {
 	$(elementId).mergely({
 		width: width,
 		height: height,
@@ -46,12 +46,20 @@ function initMergely(elementId, height, contextHeight, width, lineNumberLeft, co
 				editor_left.options.user = comment_user;
 				editor_left.options.comment = comment;
 				editor_left.options.code_suggestion = code_suggestion_L;
+				editor_left.options.comment_lineNumber = comment_lineNumber;
+				editor_left.options.sub_lineNumber = sub_lineNumber;
+				editor_left.options.add_lineNumber = add_lineNumber;
+				editor_left.options.total_lineNumber = total_lineNumber;
 				editor_left.on("change", openCommentBox);
 			}
 			if (code_suggestion_R != ""){
 				editor_right.options.user = comment_user;
 				editor_right.options.comment = comment;
 				editor_right.options.code_suggestion = code_suggestion_R;
+				editor_right.options.comment_lineNumber = comment_lineNumber;
+				editor_right.options.add_lineNumber = add_lineNumber;
+				editor_right.options.sub_lineNumber = sub_lineNumber;
+				editor_right.options.total_lineNumber = total_lineNumber;
 				editor_right.on("change", openCommentBox);
 			}
 			editor_right.on("gutterClick", handleGutterClick);
@@ -67,20 +75,6 @@ function initMergely(elementId, height, contextHeight, width, lineNumberLeft, co
 			editor_left.ps_rhs = contentRight;
 			editor_left.ps_suffix = suffix;
 			editor_left.ps_prefixActive = false;
-
-			// Add line widget
-			/**
-			var lineNumber = 10; // Line number where you want to add the line widget
-			var content = "This is a line widget";
-
-			var node = document.createElement("div");
-			node.textContent = content;
-
-			var lineWidget = editor_right.addLineWidget(lineNumber - 1, makeMarker("Review comments"), {coverGutter: true, noHScroll: true});
-
-			// Optional: Set the code in the editor
-			editor_right.setValue(contentRight);
-			 */
 		}
 	});
 }
@@ -90,16 +84,6 @@ function logData(action, data){
     // console.log(`${new Date().getTime()};${action};${data}\n`)
     log_records.push(`${new Date().getTime()};${action};${data}\n`);
 }
-
-
-// function makeMarker(msg) {
-// 	var marker = document.createElement("div");
-// 	marker.title = msg;
-// 	marker.style.color = "#dd0000";
-// 	marker.innerHTML = "■";
-// 	marker.style.fontSize = "18px";
-// 	return marker;
-// }
 
 function makeMarker(msg){
 	var marker = document.createElement("div");
@@ -124,6 +108,7 @@ function makeTextArea(user, user_comment){
 	marker.style.borderRadius = "8px";
 	marker.style.padding = "5px";
 	marker.style.margin = "15px";
+	marker.style.backgroundColor = "white";
 
 	var headerdiv = document.createElement("div");
 	var img = headerdiv.appendChild(document.createElement("img"));
@@ -183,6 +168,7 @@ function makeTextArea(user, user_comment){
 	marker.appendChild(headerdiv_sugg);
 	//marker.appendChild(document.createElement("br"));
 
+	var messageDiv = marker.appendChild(document.createElement("div"));
 	var list = document.createElement("ul");
 	list.style.listStyleType = "none";
 	list.style.padding = "0";
@@ -219,9 +205,19 @@ function makeTextArea(user, user_comment){
 		if (button1.innerHTML == "Commit Changes"){
 			logData("commit changes", "yes");
 			button1.innerHTML = "Undo Commit";
+			messageDiv.innerHTML = "Changes Committed";
+			messageDiv.style.color = "green";
+			messageDiv.style.fontSize = "14px";
+			messageDiv.style.fontStyle = "bold";
+			messageDiv.style.fontFamily = "Noto sans-serif";
 		}else if (button1.innerHTML == "Undo Commit"){
 			logData("undo commit", "yes");
 			button1.innerHTML = "Commit Changes";
+			messageDiv.innerHTML = "Changes Reverted";
+			messageDiv.style.color = "red";
+			messageDiv.style.fontSize = "14px";
+			messageDiv.style.fontStyle = "bold";
+			messageDiv.style.fontFamily = "Noto sans-serif";
 		}
 	}
 
@@ -315,7 +311,11 @@ function openCommentBox(instance, lineNumber, gutter, clickEvent){
 
 	var user = instance.options.user;
 	var comment = instance.options.comment;
-	var line_widget = instance.addLineWidget(20, makeTextArea(user, comment), {above: true, noHScroll: true});
+	var comment_lineNumber = instance.options.comment_lineNumber;
+	var sub_lineNumber = instance.options.sub_lineNumber;
+	var add_lineNumber = instance.options.add_lineNumber;
+	var total_lineNumber = instance.options.total_lineNumber;
+	var line_widget = instance.addLineWidget(comment_lineNumber, makeTextArea(user, comment), {above: true, noHScroll: true});
 
 	// Get the textarea element and its value
 	var code = instance.options.code_suggestion;
@@ -323,12 +323,16 @@ function openCommentBox(instance, lineNumber, gutter, clickEvent){
     // Initialize CodeMirror with the textarea and set the code
     var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("codeEditor"), {
       lineNumbers: true,
-	  firstLineNumber: 20
+	  firstLineNumber: comment_lineNumber,
     });
     myCodeMirror.setValue(code); // Set the initial code in the editor
 
-	myCodeMirror.addLineClass(1, "background", "mark");
-	myCodeMirror.addLineClass(2, "background", "mark");
+	for (var i = sub_lineNumber; i < add_lineNumber; i++) {
+		myCodeMirror.addLineClass(i, "background", "mark_sub");
+	}
+	for (var i = add_lineNumber; i <= total_lineNumber; i++) {
+		myCodeMirror.addLineClass(i, "background", "mark_add");
+	}
 }
 
 function handleGutterClick(instance, lineNumber, gutter, clickEvent){

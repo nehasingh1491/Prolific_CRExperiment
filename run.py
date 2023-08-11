@@ -256,6 +256,10 @@ def build_experiments(experiment_snippets):
             "suffix_escaped": 1,
             "comment_user": experiment_snippet['comment_user'],
             "comment": experiment_snippet['comment'],
+            "comment_lineNumber": experiment_snippet['comment_lineNumber'],
+            "subtracted_lineNumber": experiment_snippet['subtracted_lineNumber'],
+            "added_lineNumber": experiment_snippet['added_lineNumber'],
+            "total_lineNumber": experiment_snippet['total_lineNumber'],
             "code_suggestion_L": experiment_snippet['code_suggestion_L'],
             "code_suggestion_R": experiment_snippet['code_suggestion_R'],
         })

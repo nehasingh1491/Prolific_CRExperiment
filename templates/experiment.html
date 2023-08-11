@@ -48,6 +48,10 @@
                         '{{code["suffix_escaped"]}}',
                         '{{code["comment_user"]}}',
                         '{{code["comment"]}}',
+                        parseInt('{{code["comment_lineNumber"]}}'),
+                        parseInt('{{code["subtracted_lineNumber"]}}'),
+                        parseInt('{{code["added_lineNumber"]}}'),
+                        parseInt('{{code["total_lineNumber"]}}'),
                         '{{code["code_suggestion_L"]}}',
                         '{{code["code_suggestion_R"]}}',);
                 {% endfor %}
@@ -60,43 +64,13 @@
             $("#final-questions").show();
         }
     </script>
-
-    <!-- <script>
-        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-        posthog.init('phc_wNcrb8oswR8euEACD1JS5sRhcIPRWzOEBeWk9dBwONE',{api_host:'https://app.posthog.com'})
-    </script> -->
-    <!-- OpenReplay Tracking Code for my first project -->
-<!-- OpenReplay Tracking Code for my first project -->
-<script>
-    var initOpts = {
-      projectKey: "MwcOLDkEU3aCTOBSJRQZ",
-      defaultInputMode: 0,
-      obscureTextNumbers: false,
-      obscureTextEmails: true,
-    };
-    var startOpts = { userID: "" };
-    (function(A,s,a,y,e,r){
-      r=window.OpenReplay=[e,r,y,[s-1, e]];
-      s=document.createElement('script');s.src=A;s.async=!a;
-      document.getElementsByTagName('head')[0].appendChild(s);
-      r.start=function(v){r.push([0])};
-      r.stop=function(v){r.push([1])};
-      r.setUserID=function(id){r.push([2,id])};
-      r.setUserAnonymousID=function(id){r.push([3,id])};
-      r.setMetadata=function(k,v){r.push([4,k,v])};
-      r.event=function(k,p,i){r.push([5,k,p,i])};
-      r.issue=function(k,p){r.push([6,k,p])};
-      r.isActive=function(){return false};
-      r.getSessionToken=function(){};
-    })("//static.openreplay.com/latest/openreplay.js",1,0,initOpts,startOpts);
-  </script>
 </head>
 <style>
     #mergely-splash { display: none !important;}
-    .mark {
-        background-color: yellow;/*#ffebe9;*/
+    .mark_sub {
+        background-color: #ffebe9;
     }
-    .mark-green {
+    .mark_add {
         background-color: #e9ffe9;
     }
 </style>
@@ -138,14 +112,14 @@
                 <div id="compare{{code['id']}}" class="hunk"></div><br/>
             {% endfor %}
         </div>
-        <div style="clear: both;">
+        <!-- <div style="clear: both;">
             <button id="review-completed" class="button blue" onclick="showquestions();">I have completed my review</button>
         </div>
         <div style="clear: both; display: none" id="final-questions">
-            <form action="experiment_concluded" method="post" id="current_form">
+            <form action="experiment_concluded" method="post" id="current_form"> -->
                 <!-- "diff_data" is a fieldset with a textarea inside containing JSON formatted log data. Doing this
                 we do not need to manipulate data in a submission function due Flask post request mechanics-->
-                <fieldset id="diff_data" hidden>
+                <!-- <fieldset id="diff_data" hidden>
                     <textarea name="hidden_log" id="hidden_log"></textarea>
                 </fieldset>
                  {{ md_body|safe }}
@@ -161,7 +135,13 @@
                 <br>
                 <button type="submit" id="submitter" class="button blue">Next ►</button>
             </form>
+        </div> -->
+        <div style="clear: both;">
+            <form action="experiment_concluded" method="post" id="current_form"> 
+                <button type="submit" id="submitter" class="button blue">I have completed my review</button>
+            </form>
         </div>
+        
     </div>
 </body>
 </html>
