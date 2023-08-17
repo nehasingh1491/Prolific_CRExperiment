@@ -26,17 +26,17 @@ experiments_path = os.path.join("resources", "experiments")
 # Experiment2 control
 # Experiment2 test
 experiments_started = Counter()
-experiments_started['CR1-control'] = 0
-experiments_started['CR1-test'] = 0
-experiments_started['CR2-control'] = 0
-experiments_started['CR2-test'] = 0
+experiments_started['HumanCorr-control'] = 0
+experiments_started['HumanIncorr-test'] = 0
+experiments_started['AICorr-test'] = 0
+experiments_started['AIInCorr-test'] = 0
 
 # Counters of how many experiments have concluded
 experiments_concluded = Counter()
-experiments_concluded['CR1-control'] = 0
-experiments_concluded['CR1-test'] = 0
-experiments_concluded['CR2-control'] = 0
-experiments_concluded['CR2-test'] = 0
+experiments_concluded['HumanCorr-control'] = 0
+experiments_concluded['HumanIncorr-test'] = 0
+experiments_concluded['AICorr-test'] = 0
+experiments_concluded['AIInCorr-test'] = 0
 
 # Creation of log file based on id name
 html_tags = ["<li", "<ul", "<a"]
@@ -51,7 +51,7 @@ def choose_experiment():
     If we have more than one such case, we choose the one that has the least
     amount of started experiments.
     """
-    min_val = experiments_concluded.most_common()[-1][1]
+    min_val = experiments_concluded.most_common()[-1][1] #least common experiments_concluded
 
     mins = []
     for k in experiments_concluded:
@@ -73,12 +73,18 @@ def choose_experiment():
 
     print("Assigned to " + to_assing)
 
-    if to_assing.startswith('CR1'):
+    if to_assing.startswith('HumanCorr'):
         # assign to experiment 1
         cr = 'files_experiment1'
-    else:
+    elif to_assing.startswith('HumanIncorr'):
         # assign to experiment 2
         cr = 'files_experiment2'
+    elif to_assing.startswith('AICorr'):
+        # assign to experiment 3
+        cr = 'files_experiment3'
+    else:
+        # assign to experiment 4
+        cr = 'files_experiment4'
 
     if to_assing.split('-')[0].endswith('control'):
         # assigned to control group

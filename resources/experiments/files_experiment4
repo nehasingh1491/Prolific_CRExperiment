@@ -95,11 +95,11 @@
                     [i] + rest for rest in subsequences(i + 1, b, k - 1)
                 )
             return ret
-*****Alice-Add a check when k is zero-54-0-1-3-Alice
+*****Alice-Add a check when k is zero-54-0-1-3-Bot
 - ret = []
 + ret = []
 + if k == 0:
-+ 	 return [[]]
++ 	 return []
 *****
 ~~~~
 

@@ -18,7 +18,7 @@ $(window).on("load", function(){
 
 
 function initMergely(elementId, height, contextHeight, width, lineNumberLeft, contentLeft, lineNumberRight, contentRight, prefixLineCount, prefix, suffix,
-	comment_user, comment, comment_lineNumber, sub_lineNumber, add_lineNumber, total_lineNumber, code_suggestion_L, code_suggestion_R) {
+	comment_user, codesugg_user, comment, comment_lineNumber, sub_lineNumber, add_lineNumber, total_lineNumber, code_suggestion_L, code_suggestion_R) {
 	$(elementId).mergely({
 		width: width,
 		height: height,
@@ -44,6 +44,7 @@ function initMergely(elementId, height, contextHeight, width, lineNumberLeft, co
 			editor_right.options.firstLineNumber = lineNumberRight;
 			if (code_suggestion_L != "") {
 				editor_left.options.user = comment_user;
+				editor_left.options.codesugg_user = codesugg_user;
 				editor_left.options.comment = comment;
 				editor_left.options.code_suggestion = code_suggestion_L;
 				editor_left.options.comment_lineNumber = comment_lineNumber;
@@ -54,6 +55,7 @@ function initMergely(elementId, height, contextHeight, width, lineNumberLeft, co
 			}
 			if (code_suggestion_R != ""){
 				editor_right.options.user = comment_user;
+				editor_right.options.codesugg_user = codesugg_user;
 				editor_right.options.comment = comment;
 				editor_right.options.code_suggestion = code_suggestion_R;
 				editor_right.options.comment_lineNumber = comment_lineNumber;
@@ -102,17 +104,24 @@ function makeMarker(msg){
 	return marker;
 }
 
-function makeTextArea(user, user_comment){
+function makeTextArea(user, user_comment, codesugg_user){
 	var marker = document.createElement("div");
+	marker.id = "outerBox";
 	marker.style.border = "1px solid grey";
 	marker.style.borderRadius = "8px";
 	marker.style.padding = "5px";
 	marker.style.margin = "15px";
 	marker.style.backgroundColor = "white";
 
+	//header -- user review comment
 	var headerdiv = document.createElement("div");
+	headerdiv.id = "commentUser";
 	var img = headerdiv.appendChild(document.createElement("img"));
-	img.src = "/static/avatar.png";
+	if(user == "Alice"){
+		img.src = "/static/human_avatar.png";
+	}else if(user == "Bot"){
+		img.src = "/static/bot_avatar.png";
+	}
 	img.alt = "User Avatar";
 	img.className = "avatar";
 	img.style.width = "30px";
@@ -143,9 +152,15 @@ function makeTextArea(user, user_comment){
 	marker.appendChild(document.createElement("br"));
 	marker.appendChild(document.createElement("br"));
 
+	//header -- user code suggestion
 	var headerdiv_sugg = document.createElement("div");
+	headerdiv_sugg.id = "innerBox"
 	var img1 = headerdiv_sugg.appendChild(document.createElement("img"));
-	img1.src = "/static/avatar.png";
+	if(codesugg_user == "Alice"){
+		img.src = "/static/human_avatar.png";
+	}else if(codesugg_user == "Bot"){
+		img.src = "/static/bot_avatar.png";
+	}
 	img1.alt = "User Avatar";
 	img1.className = "avatar";
 	img1.style.width = "30px";
@@ -153,7 +168,7 @@ function makeTextArea(user, user_comment){
 	img1.style.borderRadius = "55%";
 	var username = headerdiv_sugg.appendChild(document.createElement("span"));
 	username.className = "username";
-	username.innerHTML = user;
+	username.innerHTML = codesugg_user;
 	username.style.fontWeight = "bold";
 	username.style.marginLeft = "15px";
 	username.style.fontSize = "16px";
@@ -310,12 +325,13 @@ function makeTextArea(user, user_comment){
 function openCommentBox(instance, lineNumber, gutter, clickEvent){
 
 	var user = instance.options.user;
+	var codesugg_user = instance.options.codesugg_user;
 	var comment = instance.options.comment;
 	var comment_lineNumber = instance.options.comment_lineNumber;
 	var sub_lineNumber = instance.options.sub_lineNumber;
 	var add_lineNumber = instance.options.add_lineNumber;
 	var total_lineNumber = instance.options.total_lineNumber;
-	var line_widget = instance.addLineWidget(comment_lineNumber, makeTextArea(user, comment), {above: true, noHScroll: true});
+	var line_widget = instance.addLineWidget(comment_lineNumber, makeTextArea(user, comment, codesugg_user), {above: true, noHScroll: true});
 
 	// Get the textarea element and its value
 	var code = instance.options.code_suggestion;

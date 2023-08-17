@@ -42,6 +42,7 @@ class Parser:
                     subtracted_lineNumber = line.split("-")[3]
                     added_lineNumber = line.split("-")[4]
                     total_lineNumber = line.split("-")[5]
+                    sugg_user = line.split("-")[6]
                     comment_flag = True
                 else:
                     comment_flag = False
@@ -49,6 +50,7 @@ class Parser:
 
             if comment_flag:
                 snippets[snippet_number]['comment_user'] = user_name
+                snippets[snippet_number]['codesugg_user']= sugg_user
                 snippets[snippet_number]['comment'] = comment
                 snippets[snippet_number]['comment_lineNumber'] = comment_lineNumber
                 snippets[snippet_number]['subtracted_lineNumber'] = subtracted_lineNumber
@@ -68,6 +70,7 @@ class Parser:
                         'num_lines_L': 0,
                         'num_lines_R': 0,
                         'comment_user': None,
+                        'codesugg_user': None,
                         'comment': None,
                         'comment_lineNumber': 0,
                         'subtracted_lineNumber': 0,
