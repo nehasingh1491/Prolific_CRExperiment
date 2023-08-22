@@ -62,7 +62,8 @@
         function showquestions(){
             logData("end_cr_experiment", "clickshowquestions")
             $("#review-completed").hide();
-            $("#final-questions").show();
+            $("#id01").hide();
+            $("#postreview-questions").show();
         }
     </script>
 </head>
@@ -92,7 +93,7 @@
             To add a review remark, click on the corresponding line number. To delete a review mark, click on it again and delete the remark's text.<br><br>
         </p>
         <p>
-            To accept the code suggestion provided to fix review comment, click on Commit Changes button. To reject the code suggestion, provide a reply comment. <br><br>
+            To accept the code suggestion provided to fix review comment(suggested code fix for review comment), click on Commit Changes button. To reject the code suggestion, provide a reply comment. <br><br>
         </p>
         
 
@@ -116,17 +117,20 @@
                 <div id="compare{{code['id']}}" class="hunk"></div><br/>
             {% endfor %}
         </div>
-        <!-- <div style="clear: both;">
-            <button id="review-completed" class="button blue" onclick="showquestions();">I have completed my review</button>
+
+        <div style="clear: both;">
+            <button id="review-completed" onclick="document.getElementById('id01').style.display='block'" class="button blue" style="height: 50px;">I have completed my review</button>
+            
         </div>
-        <div style="clear: both; display: none" id="final-questions">
-            <form action="experiment_concluded" method="post" id="current_form"> -->
+
+        <div style="clear: both; display: none" id="postreview-questions">
+            <form action="experiment_concluded" method="post" id="current_form">
                 <!-- "diff_data" is a fieldset with a textarea inside containing JSON formatted log data. Doing this
                 we do not need to manipulate data in a submission function due Flask post request mechanics-->
-                <!-- <fieldset id="diff_data" hidden>
+                <fieldset id="diff_data" hidden style="display: none">
                     <textarea name="hidden_log" id="hidden_log"></textarea>
                 </fieldset>
-                 {{ md_body|safe }}
+                {{ md_body|safe }}
                 <br>
                 <fieldset id="fieldset_question_5" class="container_radio_buttons">
                     <p>How long have you been interrupted during the execution of the review?</p>
@@ -137,15 +141,116 @@
                     <label><input type="radio" name="question_interruption_time" id="question_interruption_time_a4" value="4" class="option-input radio">more than 10 minutes</label><br>
                 </fieldset>
                 <br>
+                <fieldset id="fieldset_question_feedback2" class="container_textarea"><p> Please ellaborate on why you decided to accept or reject the suggested code fix? <br>
+                    <label><textarea id="qfeedback2" name="question_feedback2" style="height: 50px"></textarea></label>
+                </fieldset>
+                <br>
                 <button type="submit" id="submitter" class="button blue">Next ►</button>
             </form>
-        </div> -->
-        <div style="clear: both;">
-            <form action="experiment_concluded" method="post" id="current_form"> 
-                <button type="submit" id="submitter" class="button blue">I have completed my review</button>
-            </form>
         </div>
+
+        <!-- <div style="clear: both;">
+            <form action="experiment_concluded" method="post" id="current_form">
+                #"diff_data" is a fieldset with a textarea inside containing JSON formatted log data. Doing this
+                #we do not need to manipulate data in a submission function due Flask post request mechanics
+                <fieldset id="diff_data" hidden style="display: none">
+                    <textarea name="hidden_log" id="hidden_log"></textarea>
+                </fieldset>
+                <button type="submit" id="submitter1" class="button blue">I have completed my review</button>
+            </form>
+
+            <div style="clear: both; display: none" id="postreview-questions">
+                <form action="survey" method="post" id="current_form">
+                    #"diff_data" is a fieldset with a textarea inside containing JSON formatted log data. Doing this
+                    #we do not need to manipulate data in a submission function due Flask post request mechanics
+                    <fieldset id="diff_data" hidden style="display: none">
+                        <textarea name="hidden_log" id="hidden_log"></textarea>
+                    </fieldset>
+                    {{ md_body|safe }}
+                    <br>
+                    <fieldset id="fieldset_question_5" class="container_radio_buttons">
+                        <p>How long have you been interrupted during the execution of the review?</p>
+                        <label><input type="radio" name="question_interruption_time" id="question_interruption_time_a0" value="0" class="option-input radio" required>No interruption time</label><br>
+                        <label><input type="radio" name="question_interruption_time" id="question_interruption_time_a1" value="1" class="option-input radio">1-2 minutes</label><br>
+                        <label><input type="radio" name="question_interruption_time" id="question_interruption_time_a2" value="2" class="option-input radio">up to 5 minutes</label><br>
+                        <label><input type="radio" name="question_interruption_time" id="question_interruption_time_a3" value="3" class="option-input radio">up to 10 minutes</label><br>
+                        <label><input type="radio" name="question_interruption_time" id="question_interruption_time_a4" value="4" class="option-input radio">more than 10 minutes</label><br>
+                    </fieldset>
+                    <br>
+                    <button type="submit" id="submitter" class="button blue">Next ►</button>
+                </form>
+            </div>
+        </div> -->
         
     </div>
+
+    <div id="id01" class="modal">
+
+        <form class="modal-content animate">
+            <div class="imgcontainer">
+                <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close">&times;</span>
+            </div>
+
+            <div class="container-popup">
+                <!--            <label for="uname"><b>Comment</b></label>-->
+                <!--            <input type="text" placeholder="Enter comment" name="uname" required>-->
+
+                <p> Do you want to complete the review? </p>
+
+                <br>
+
+                <div class="btn-group" style="text-align: center;">
+                    <button type="button" onclick="document.getElementById('id01').style.display='none'" class="button-popup blue">No</button>
+                    <button type="button" onclick="showquestions();" class="button-popup blue">Yes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="remark-popup-window" class="modal">
+
+        <form class="modal-content animate" onkeypress="return event.keyCode != 13">
+            <div class="imgcontainer">
+                <span onclick="document.getElementById('remark-popup-window').style.display='none'" class="close" title="Close">&times;</span>
+            </div>
+
+            <div class="container-popup">
+                <!--            <label for="uname"><b>Comment</b></label>-->
+                <!--            <input type="text" placeholder="Enter comment" name="uname" required>-->
+                <label><b>Please enter review remark:</b></label>
+                <input type="text" placeholder="Remark" name="remark" onkeypress="return runScript(event)" id="review-remark" required>
+
+                <br>
+
+                <div class="btn-group" style="text-align: center;">
+                    <button type="button" onclick="document.getElementById('remark-popup-window').style.display='none'" class="button-popup blue">Cancel</button>
+                    <button type="button" onclick="document.getElementById('remark-popup-window').style.display='none'; recordRemark()" class="button-popup blue">Ok</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function runScript(e) {
+            //See notes about 'which' and 'key'
+            if (e.keyCode == 13) {
+                document.getElementById('remark-popup-window').style.display='none';
+                recordRemark()
+            }
+        }
+    </script>
+
+    <style type="text/css">
+        #dialog {
+            width:      200px;
+            margin:     auto;
+            padding:    10px;
+            border:     thin solid black;
+            background: lightgreen;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
 </body>
 </html>

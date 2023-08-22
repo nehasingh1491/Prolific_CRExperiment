@@ -4,66 +4,35 @@
 {% endblock %}
  {% block content %}
      <p>Please answer the following questions after having concluded the experiment:</p><br>
-     <form action="feedback" method="post" id="current_form">
-        <fieldset id="fieldset_question_0" class="container_radio_buttons"><p>Why did you choose to accept the code suggestions provided?</p>
-            <label><textarea id="q0" name="feedback_0" style="height: 50px; width: 500px"></textarea></label>
-        </fieldset><br>
-        <fieldset id="fieldset_question_1" class="container_radio_buttons"><p>Why did you choose to not accept the code suggestions provided?</small></p>
-            <label><textarea id="q1" name="feedback_1" style="height: 50px; width: 500px"></textarea></label>
-        </fieldset><br>
-        <fieldset id="fieldset_question_1" class="container_radio_buttons"><p>What is the level of confidence you feel
-             regarding the code suggestion provided. On a scale of 1 to 5, with 1 being the least confident and 5 being the most confident, please
-              indicate how confident you feel about the code suggestion.</small></p><br>
-            <!-- <label><textarea id="q1" name="feedback_1" style="height: 50px"></textarea></label> -->
-            <ul class='likert'>
-            <li>
-                <input type="radio" name="likert" value="strong_agree">
-                <label>Strongly agree</label>
-            </li>
-            <li>
-                <input type="radio" name="likert" value="strong_agree">
-                <label>Agree</label>
-            </li>
-            <li>
-                <input type="radio" name="likert" value="strong_agree">
-                <label>Neutral</label>
-            </li>
-            <li>
-                <input type="radio" name="likert" value="disagree">
-                <label>Disagree</label>
-            </li>
-            <li>
-                <input type="radio" name="likert" value="strong_agree">
-                <label>Strongly disagree</label>
-            </li>
-            </ul>
-        </fieldset><br>
-        <fieldset id="fieldset_question_1" class="container_radio_buttons"><p>How much do you trust </small></p><br>
-           <!-- <label><textarea id="q1" name="feedback_1" style="height: 50px"></textarea></label> -->
-           <ul class='likert'>
-           <li>
-               <input type="radio" name="likert" value="strong_agree">
-               <label>Strongly agree</label>
-           </li>
-           <li>
-               <input type="radio" name="likert" value="strong_agree">
-               <label>Agree</label>
-           </li>
-           <li>
-               <input type="radio" name="likert" value="strong_agree">
-               <label>Neutral</label>
-           </li>
-           <li>
-               <input type="radio" name="likert" value="disagree">
-               <label>Disagree</label>
-           </li>
-           <li>
-               <input type="radio" name="likert" value="strong_agree">
-               <label>Strongly disagree</label>
-           </li>
-           </ul>
-       </fieldset><br>
+     <form action="dem_que" method="post" id="current_form">
+        
+        {% if data == "Alice" %}
+            <fieldset id="fieldset_post_experiment_que1_1" class="container_radio_buttons">
+                <p> To what extent the fact that, the suggested fix was authored by Human rather than AI influenced your decision? <br>
+                <label><input type="radio" name="question_agree" id="question_agree_a0" value="0" class="option-input radio" required>Strongly Disagree</label><br>
+                <label><input type="radio" name="question_agree" id="question_agree_a1" value="1" class="option-input radio">Disagree</label><br>
+                <label><input type="radio" name="question_agree" id="question_agree_a2" value="2" class="option-input radio">Neither Agree nor disagree</label><br>
+                <label><input type="radio" name="question_agree" id="question_agree_a3" value="3" class="option-input radio">Agree</label><br>
+                <label><input type="radio" name="question_agree" id="question_agree_a4" value="4" class="option-input radio">Strongly Agree</label><br>
+            </fieldset>
+        {% else -%}
+            <fieldset id="fieldset_post_experiment_que1_2" class="container_radio_buttons">
+                <p> To what extent the fact that, the suggested fix was authored by AI rather than Human influenced your decision? <br>
+                <label><input type="radio" name="question_agree" id="question_agree1_a0" value="0" class="option-input radio" required>Strongly Disagree</label><br>
+                <label><input type="radio" name="question_agree" id="question_agree1_a1" value="1" class="option-input radio">Disagree</label><br>
+                <label><input type="radio" name="question_agree" id="question_agree1_a2" value="2" class="option-input radio">Neither Agree nor disagree</label><br>
+                <label><input type="radio" name="question_agree" id="question_agree1_a3" value="3" class="option-input radio">Agree</label><br>
+                <label><input type="radio" name="question_agree" id="question_agree1_a4" value="4" class="option-input radio">Strongly Agree</label><br>
+            </fieldset>
+        {% endif %}
+            
         <br>
-         <button type="submit" id="submitter" class="button blue">Next</button>
+        <fieldset id="fieldset_post_experiment_que2" class="container_textarea"><p> Please ellaborate your answer? <br>
+            <label><textarea id="post_experiment_que2" name="post_experiment_que2" style="height: 50px"></textarea></label>
+        </fieldset>
+        <br>
+
+        <button type="submit" id="submitter" class="button blue">Next ►</button>
+
      </form>
 {% endblock %}

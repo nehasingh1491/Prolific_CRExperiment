@@ -4,8 +4,9 @@ var reviewRemarks = {};
 
 $(window).on("load", function(){
 
-    $("#submitter").click(function () {
+    $("#review-completed").click(function () {
         logData("pageClosed", "pageClosed");
+		logData("hiddenCommitDec", document.getElementById("hiddenCommitDec").value);
 
         var data = {
             'data': log_records
@@ -26,7 +27,7 @@ function initMergely(elementId, height, contextHeight, width, lineNumberLeft, co
 		fadein: '',
 		cmsettings: { 
 			readOnly: true, 
-			mode: "text/x-java", 
+			mode: "text/x-python", 
 			autoresize: false, 
 			lineWrapping: true, 
 			gutters: ["remarks", "CodeMirror-linenumbers"]},
@@ -156,10 +157,11 @@ function makeTextArea(user, user_comment, codesugg_user){
 	var headerdiv_sugg = document.createElement("div");
 	headerdiv_sugg.id = "innerBox"
 	var img1 = headerdiv_sugg.appendChild(document.createElement("img"));
+	logData("codesugg_user", codesugg_user);
 	if(codesugg_user == "Alice"){
-		img.src = "/static/human_avatar.png";
+		img1.src = "/static/human_avatar.png";
 	}else if(codesugg_user == "Bot"){
-		img.src = "/static/bot_avatar.png";
+		img1.src = "/static/bot_avatar.png";
 	}
 	img1.alt = "User Avatar";
 	img1.className = "avatar";
@@ -207,8 +209,15 @@ function makeTextArea(user, user_comment, codesugg_user){
 	var item3 = list.appendChild(document.createElement("li"));
 	item3.style.padding = "5px";
 	item3.style.textAlign = "right";
+	
+	var commitText = item3.appendChild(document.createElement("textarea")); //hidden textarea for seeting commit decision
+	commitText.id = "hiddenCommitDec";
+	commitText.style.display="none";
+
 	var button1 = item3.appendChild(document.createElement("button"));
+	button1.type="button";
 	button1.innerHTML = "Commit Changes";
+	button1.id="commit";
 	button1.style.borderRadius= "5px";
 	button1.style.backgroundColor= "#e7e7e7";
     button1.style.color= "black";
@@ -225,6 +234,7 @@ function makeTextArea(user, user_comment, codesugg_user){
 			messageDiv.style.fontSize = "14px";
 			messageDiv.style.fontStyle = "bold";
 			messageDiv.style.fontFamily = "Noto sans-serif";
+			document.getElementById("hiddenCommitDec").value = "committed";
 		}else if (button1.innerHTML == "Undo Commit"){
 			logData("undo commit", "yes");
 			button1.innerHTML = "Commit Changes";
@@ -233,6 +243,7 @@ function makeTextArea(user, user_comment, codesugg_user){
 			messageDiv.style.fontSize = "14px";
 			messageDiv.style.fontStyle = "bold";
 			messageDiv.style.fontFamily = "Noto sans-serif";
+			document.getElementById("hiddenCommitDec").value = "";
 		}
 	}
 

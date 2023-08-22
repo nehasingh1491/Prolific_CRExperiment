@@ -183,8 +183,23 @@ def experiment_concluded():
     """
     user_id = request.cookies.get('experiment-userid', 'userNotFound')
     exp_is_done = request.cookies.get('experiment-is_done', 'not_done')
+
     if request.method == 'POST':
         data: dict = request.form.to_dict()
+
+        # print("DATA::::",data["hidden_log"]["data"], flush=True)
+        # print("DATA::::",data, flush=True)
+
+        for key in data.keys():
+            if key == 'hidden_log':
+                d = json.loads(data[key])
+                for log in d['data']:
+                    splitted = log.strip().split(";")
+                    action = splitted[1]
+                    info = ';'.join(splitted[2:])
+                    if action == "codesugg_user":
+                        user = info
+
         log_received_data(user_id, data)
 
     log_data(str(user_id), "end", "cr_experiment")
@@ -192,11 +207,24 @@ def experiment_concluded():
         #post_questions = read_files("post_questions.txt")
         resp = make_response(render_template('experiment_concluded.html',
                                              #post_questions=post_questions,
-                                             title="Post Questions"))
+                                             title="Post Questions", data=user))
         return resp
     else:
         return redirect(url_for('already_done'))
 
+
+@app.route("/dem_que", methods=['GET', 'POST'])
+def demographic_questions():
+    """
+    Return the page "templates/dem_questions.html"
+    """
+    user_id = request.cookies.get('experiment-userid', 'userNotFound')
+    if request.method == 'POST':
+        data: dict = request.form.to_dict()
+        log_received_data(user_id, data)
+
+    resp = make_response(render_template("dem_questions.html", title='Demographic Questions'))
+    return resp
 
 @app.route("/feedback", methods=['GET', 'POST'])
 def feedback():
@@ -230,14 +258,14 @@ def conclusion():
     exp_is_test = request.cookies.get('experiment-experimentCRistest')
 
     # update the correspondent counter
-    if exp_type == 'files_experiment1' and exp_is_test == 'True':
-        experiments_concluded['CR1-control'] += 1
-    elif exp_type == 'files_experiment1' and exp_is_test == 'False':
-        experiments_concluded['CR1-test'] += 1
-    elif exp_type == 'files_experiment2' and exp_is_test == 'True':
-        experiments_concluded['CR2-control'] += 1
-    elif exp_type == 'files_experiment2' and exp_is_test == 'False':
-        experiments_concluded['CR2-test'] += 1
+    if exp_type == 'files_experiment1':
+        experiments_concluded['HumanCorr-control'] += 1
+    elif exp_type == 'files_experiment2':
+        experiments_concluded['HumanIncorr-test'] += 1
+    elif exp_type == 'files_experiment3':
+        experiments_concluded['AICorr-test'] += 1
+    elif exp_type == 'files_experiment2':
+        experiments_concluded['AIInCorr-test'] += 1
 
     #conclusion_text = read_files("conclusion.txt")
     return render_template("conclusion.html", title='conclusion')
@@ -261,6 +289,7 @@ def build_experiments(experiment_snippets):
             "prefix_escaped": 1,
             "suffix_escaped": 1,
             "comment_user": experiment_snippet['comment_user'],
+            "codesugg_user": experiment_snippet['codesugg_user'],
             "comment": experiment_snippet['comment'],
             "comment_lineNumber": experiment_snippet['comment_lineNumber'],
             "subtracted_lineNumber": experiment_snippet['subtracted_lineNumber'],
