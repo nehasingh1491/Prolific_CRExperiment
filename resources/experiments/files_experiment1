@@ -1,75 +1,72 @@
-~~~~0L-CustomerManagementSystem/src/main.py
-    class EmployeeManagementSystem:
-        def __init__(self):
-            self.employees = []
+~~~~0L-SequenceManager/src/main.py
+    class SequenceUtility:
+        """
+        Check if a string is subsequence of another string
+        """
+        def isSubSequence(s1, s2, m, n):
+            if m == 0:
+                return True
+            if n == 0:
+                return False
+            # If last characters of two strings are matching
+            if s1[m-1] == s2[n-1]:
+                return isSubSequence(s1, s2, m-1, n-1)
+            # If last characters are not matching
+            return isSubSequence(s1, s2, m, n-1)
+        
+        def count_subsequences_with_sum_zero(arr):
+            prefix_sum = 0
+            prefix_sums = {0: 1}
+            count = 0
 
-        def add_employee(self, employee):
-            self.employees.append(employee)
+            for num in arr:
+                prefix_sum += num
 
-        def remove_employee(self, employee):
-            if employee in self.employees:
-                self.employees.remove(employee)
+                if prefix_sum in prefix_sums:
+                    count += prefix_sums[prefix_sum]
 
-        def get_employee_count(self):
-            return len(self.employees)
+                if prefix_sum in prefix_sums:
+                    prefix_sums[prefix_sum] += 1
+                else:
+                    prefix_sums[prefix_sum] = 1
 
-        def get_employee_by_id(self, employee_id):
-            for employee in self.employees:
-                if employee.id == employee_id:
-                    return employee
-            return None
-
-        def get_employees_by_department(self, department):
-            department_employees = []
-            for employee in self.employees:
-                if employee.department == department:
-                    department_employees.append(employee)
-            return department_employees
-
-        def print_employee_details(self):
-            for employee in self.employees:
-                print("Employee ID:", employee.id)
-                print("Name:", employee.name)
-                print("Department:", employee.department)
-                print("Salary:", employee.salary)
-                print("=====================")
+            return count
 ~~~~
 
-~~~~0R-CustomerManagementSystem/src/main.py
-    class EmployeeManagementSystem:
-        def __init__(self):
-            self.employees = []
+~~~~0R-SequenceManager/src/main.py
+    class SequenceUtility:
+        """
+        Check if a string is subsequence of another string
+        """
+        def isSubSequence(s1, s2, m, n):
+            if m == 0:
+                return True
+            if n == 0:
+                return False
+            # If last characters of two strings are matching
+            if s1[m-1] == s2[n-1]:
+                return isSubSequence(s1, s2, m-1, n-1)
+            # If last characters are not matching
+            return isSubSequence(s1, s2, m, n-1)
+        
+        def count_subsequences_with_sum_zero(arr):
+            prefix_sum = 0
+            prefix_sums = {0: 1}
+            count = 0
 
-        def add_employee(self, employee):
-            self.employees.append(employee)
+            for num in arr:
+                prefix_sum += num
 
-        def remove_employee(self, employee):
-            if employee in self.employees:
-                self.employees.remove(employee)
+                if prefix_sum in prefix_sums:
+                    count += prefix_sums[prefix_sum]
 
-        def get_employee_count(self):
-            return len(self.employees)
+                if prefix_sum in prefix_sums:
+                    prefix_sums[prefix_sum] += 1
+                else:
+                    prefix_sums[prefix_sum] = 1
 
-        def get_employee_by_id(self, employee_id):
-            for employee in self.employees:
-                if employee.id == employee_id:
-                    return employee
-            return None
-
-        def get_employees_by_department(self, department):
-            department_employees = []
-            for employee in self.employees:
-                if employee.department == department:
-                    department_employees.append(employee)
-            return department_employees
-
-        def print_employee_details(self):
-            for employee in self.employees:
-                print("Employee ID:", employee.id)
-                print("Name:", employee.name)
-                print("Department:", employee.department)
-                print("Salary:", employee.salary)
-                print("=====================")
+            return count
+        
         """
         Subsequences
 
@@ -90,7 +87,7 @@
         """
         def subsequences(a, b, k):
             ret = []
-            for i in range(a, b + 1 - k):
+            for i in range(a, b + 1 - k + 1):  
                 ret.extend(
                     [i] + rest for rest in subsequences(i + 1, b, k - 1)
                 )
@@ -102,4 +99,3 @@
 + 	 return [[]]
 *****
 ~~~~
-

@@ -4,6 +4,7 @@ import uuid
 from collections import Counter
 from datetime import datetime
 import sys
+import psycopg2
 
 from flask import Flask, render_template, request, make_response, redirect, \
     url_for
@@ -42,6 +43,10 @@ experiments_concluded['AIInCorr-test'] = 0
 html_tags = ["<li", "<ul", "<a"]
 
 p = Parser()
+
+#added for connecting postgresql
+#conn = psycopg2.connect(host='localhost', dbname='postgres', user='postgres', password="Zurich@1491", port=5432)
+conn = psycopg2.connect(host='ec2-54-246-1-94.eu-west-1.compute.amazonaws.com', dbname='d20usq666h2m0p', user='qpursjrfhybeai', password="f9755cef7d73bb0be44eab3eb8fba472f2d6481431342821c00d3e853166cf7b", port=5432)
 
 
 def choose_experiment():
@@ -346,8 +351,18 @@ def log_data(user_id: str, key: str, data: str, dt: datetime = None):
         f.write(f'{log_dt};'
                 f'{key};'
                 f'{data}\n')
+        
+    update_sql = """INSERT INTO experiment_logs(user_id, logs) 
+    VALUES (%s, %s)
+    ON CONFLICT (user_id) DO UPDATE 
+    SET logs = experiment_logs.logs || '|' || excluded.logs"""
 
+    cur = conn.cursor() 
+    cur.execute(update_sql, (user_id, f'{log_dt};'f'{key};'f'{data}\n'))
 
+    conn.commit()
+    cur.close()
+        
 # This function read the experiment content from experiments/ folder. Each
 # file follow the same composition rule of the experiments.
 def read_experiment(file_name):

@@ -90,10 +90,11 @@
         """
         def subsequences(a, b, k):
             ret = []
-            for i in range(a, b + 1 - k):
+            for i in range(a, b + 1 - k + 1): 
                 ret.extend(
                     [i] + rest for rest in subsequences(i + 1, b, k - 1)
                 )
+
             return ret
 *****Alice-Add a check when k is zero-54-0-1-3-Bot
 - ret = []
