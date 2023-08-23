@@ -2,7 +2,7 @@ import json
 import os
 import uuid
 from collections import Counter
-from datetime import datetime
+import datetime
 import sys
 import psycopg2
 
@@ -346,19 +346,21 @@ def read_files(filename):
 
 
 def log_data(user_id: str, key: str, data: str, dt: datetime = None):
+    date_time_obj = datetime.datetime.strptime(str(datetime.datetime.now()), '%Y-%m-%d %H:%M:%S.%f')
     with open(f'{user_id}.log', 'a') as f:
-        log_dt = dt if dt is not None else datetime.timestamp(datetime.now())
+        #log_dt = dt if dt is not None else datetime.timestamp(datetime.now())
+        log_dt = dt if dt is not None else date_time_obj.time()
         f.write(f'{log_dt};'
                 f'{key};'
                 f'{data}\n')
         
-    update_sql = """INSERT INTO experiment_logs(user_id, logs) 
-    VALUES (%s, %s)
+    update_sql = """INSERT INTO experiment_logs(user_id, generated_at, logs) 
+    VALUES (%s, %s, %s)
     ON CONFLICT (user_id) DO UPDATE 
     SET logs = experiment_logs.logs || '|' || excluded.logs"""
 
     cur = conn.cursor() 
-    cur.execute(update_sql, (user_id, f'{log_dt};'f'{key};'f'{data}\n'))
+    cur.execute(update_sql, (user_id, datetime.datetime.now(), f'{log_dt};'f'{key};'f'{data}\n'))
 
     conn.commit()
     cur.close()

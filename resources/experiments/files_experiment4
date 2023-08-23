@@ -102,3 +102,226 @@
 *****
 ~~~~
 
+~~~~1L-CandidateManagementSystem/src/main.py
+    class Candidate:
+        """
+        Class representing a candidate in an election.
+        """
+
+        def __init__(self, name, party, search_token):
+            """
+            Initialize a Candidate object.
+
+            Args:
+                name (str): The name of the candidate.
+                party (str): The political party of the candidate.
+                search_token (dict): The dictionary object to be used for partial key matching
+            """
+            self.name = name
+            self.party = party
+            self.votes = 0
+            self.membership_category = None
+            if isinstance(search_token, dict):
+                self.search_token = search_token
+            else:
+                print("Invalid input. Expecting a dictionary.")
+                self.search_token = {}
+
+        def add_vote(self):
+            """
+            Increment the vote count for the candidate.
+            """
+            self.votes += 1
+
+        def get_vote_count(self):
+            """
+            Get the vote count of the candidate.
+
+            Returns:
+                int: The vote count.
+            """
+            return self.votes
+        
+        def calculate_vote_percentage(self, total_votes):
+            if total_votes > 0:
+                percentage = (self.votes / total_votes) * 100
+                return round(percentage, 2)
+            else:
+                return 0.0
+
+        def is_leading_candidate(self, other_candidate):
+            """
+            compares the vote count of the current candidate with another candidate
+
+            Returns:
+            True - if the current candidate has more votes, indicating that they are the leading candidate
+            False - if the other candidate has more votes
+            """
+            return self.votes > other_candidate.votes
+
+        def has_majority_votes(self, total_votes):
+            """
+            checks if the current candidate has more than half of the total votes in the election
+
+            Returns:
+            True - if the candidate has a majority of votes
+            False - otherwise.
+            """
+            if total_votes > 0: ##REVIEW COMMENT-#BUG can be introduced here by not checking this condition, which leads to zero division error in case of no votes
+                return self.votes > total_votes / 2
+            else:
+                return False
+
+        def check_membership_category(self):
+            """
+            Check the membership category based on the number of votes received.
+            """
+            if self.votes >= 100: ##REVIEW COMMENT- #BUG can be introduced here by improper handling of the edge case
+                self.membership_category = "Gold"
+            elif self.votes >= 50:
+                self.membership_category = "Silver"
+            else:
+                self.membership_category = "Bronze"
+
+        def set_membership(self, membership):
+            if membership in ["Gold", "Silver", "Bronze"]:
+                self.membership = membership
+                print(f"Membership set to {membership}")
+            else:
+                print("Invalid membership category.")
+
+        def get_membership(self):
+            if self.membership:
+                return self.membership
+            else:
+                return "No membership"
+~~~~
+
+~~~~1R-CandidateManagementSystem/src/main.py
+    class Candidate:
+        """
+        Class representing a candidate in an election.
+        """
+
+        def __init__(self, name, party, search_token):
+            """
+            Initialize a Candidate object.
+
+            Args:
+                name (str): The name of the candidate.
+                party (str): The political party of the candidate.
+                search_token (dict): The dictionary object to be used for partial key matching
+            """
+            self.name = name
+            self.party = party
+            self.votes = 0
+            self.membership_category = None
+            if isinstance(search_token, dict):
+                self.search_token = search_token
+            else:
+                print("Invalid input. Expecting a dictionary.")
+                self.search_token = {}
+
+        def add_vote(self):
+            """
+            Increment the vote count for the candidate.
+            """
+            self.votes += 1
+
+        def get_vote_count(self):
+            """
+            Get the vote count of the candidate.
+
+            Returns:
+                int: The vote count.
+            """
+            return self.votes
+        
+        def calculate_vote_percentage(self, total_votes):
+            if total_votes > 0:
+                percentage = (self.votes / total_votes) * 100
+                return round(percentage, 2)
+            else:
+                return 0.0
+
+        def is_leading_candidate(self, other_candidate):
+            """
+            compares the vote count of the current candidate with another candidate
+
+            Returns:
+            True - if the current candidate has more votes, indicating that they are the leading candidate
+            False - if the other candidate has more votes
+            """
+            return self.votes > other_candidate.votes
+
+        def has_majority_votes(self, total_votes):
+            """
+            checks if the current candidate has more than half of the total votes in the election
+
+            Returns:
+            True - if the candidate has a majority of votes
+            False - otherwise.
+            """
+            if total_votes > 0: ##REVIEW COMMENT-#BUG can be introduced here by not checking this condition, which leads to zero division error in case of no votes
+                return self.votes > total_votes / 2
+            else:
+                return False
+
+        def check_membership_category(self):
+            """
+            Check the membership category based on the number of votes received.
+            """
+            if self.votes >= 100: ##REVIEW COMMENT- #BUG can be introduced here by improper handling of the edge case
+                self.membership_category = "Gold"
+            elif self.votes >= 50:
+                self.membership_category = "Silver"
+            else:
+                self.membership_category = "Bronze"
+
+        def set_membership(self, membership):
+            if membership in ["Gold", "Silver", "Bronze"]:
+                self.membership = membership
+                print(f"Membership set to {membership}")
+            else:
+                print("Invalid membership category.")
+
+        def get_membership(self):
+            if self.membership:
+                return self.membership
+            else:
+                return "No membership"
+
+        """
+        Retrieve the value corresponding to a key or partial key.
+        The keys are sorted alphabetically to ensure the correct match is found.
+
+        Args:
+            key (str): The key or partial key to be matched.
+
+        Returns:
+            Any: The value corresponding to the matched key or partial key.
+        """
+        def retrieve_value_using_token(self, key):
+            if not isinstance(key, str):
+                print("Invalid key. Expecting a string.")
+                return None
+            sorted_keys = sorted(self.search_token.keys())
+            matching_key = None
+            for k in sorted_keys:
+                if k.startswith(key):
+                    matching_key = k
+                    break
+            if matching_key != None:
+                return self.search_token.get(matching_key)
+            else:
+                return None
+
+*****Alice-Use next and a generator expression instead of a loop to iterate over the sorted keys. This approach allows you to find the matching key in a more concise manner without the need for an explicit loop.-109-0-5-5-Bot
+- matching_key = None
+- for k in sorted_keys:
+-    if k.startswith(key):
+-        matching_key = k
+-        break
++ matching_key = next((k for k in sorted_keys if k.startswith(key)))
+*****
+~~~~

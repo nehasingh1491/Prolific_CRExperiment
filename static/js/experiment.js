@@ -27,7 +27,7 @@ function initMergely(elementId, height, contextHeight, width, lineNumberLeft, co
 		fadein: '',
 		cmsettings: { 
 			readOnly: true, 
-			mode: "text/x-python", 
+			mode: "python", 
 			autoresize: false, 
 			lineWrapping: true, 
 			gutters: ["remarks", "CodeMirror-linenumbers"]},
@@ -44,6 +44,7 @@ function initMergely(elementId, height, contextHeight, width, lineNumberLeft, co
 			editor_left.options.firstLineNumber = lineNumberLeft;
 			editor_right.options.firstLineNumber = lineNumberRight;
 			if (code_suggestion_L != "") {
+				editor_left.options.elementId = elementId;
 				editor_left.options.user = comment_user;
 				editor_left.options.codesugg_user = codesugg_user;
 				editor_left.options.comment = comment;
@@ -55,6 +56,7 @@ function initMergely(elementId, height, contextHeight, width, lineNumberLeft, co
 				editor_left.on("change", openCommentBox);
 			}
 			if (code_suggestion_R != ""){
+				editor_right.options.elementId = elementId;
 				editor_right.options.user = comment_user;
 				editor_right.options.codesugg_user = codesugg_user;
 				editor_right.options.comment = comment;
@@ -105,7 +107,7 @@ function makeMarker(msg){
 	return marker;
 }
 
-function makeTextArea(user, user_comment, codesugg_user){
+function makeTextArea(user, user_comment, codesugg_user, elementId){
 	var marker = document.createElement("div");
 	marker.id = "outerBox";
 	marker.style.border = "1px solid grey";
@@ -203,7 +205,7 @@ function makeTextArea(user, user_comment, codesugg_user){
 	icon.style.fontFamily = "Noto sans-serif";
 	var item2 = list.appendChild(document.createElement("li"));
 	var textArea = item2.appendChild(document.createElement("textarea"));
-	textArea.id = "codeEditor";
+	textArea.id = "codeEditor"+elementId;
 	textArea.style.resize = "none";
 	item2.style.borderBottom = "1px solid grey";
 	var item3 = list.appendChild(document.createElement("li"));
@@ -320,9 +322,11 @@ function makeTextArea(user, user_comment, codesugg_user){
 	button2.onclick = function(){
 		var reply = document.getElementById("user_reply").value;
 		logData("user_reply", reply);
-		user_reply.style.display = "none";
-		para_reply.innerHTML = reply;
-		user_reply1.style.display = "block";
+		if(reply != ""){
+			user_reply.style.display = "none";
+			para_reply.innerHTML = reply;
+			user_reply1.style.display = "block";
+		}
 	};
 
 	button3.onclick = function(){
@@ -335,6 +339,7 @@ function makeTextArea(user, user_comment, codesugg_user){
 
 function openCommentBox(instance, lineNumber, gutter, clickEvent){
 
+	var elementId = instance.options.elementId;
 	var user = instance.options.user;
 	var codesugg_user = instance.options.codesugg_user;
 	var comment = instance.options.comment;
@@ -342,13 +347,13 @@ function openCommentBox(instance, lineNumber, gutter, clickEvent){
 	var sub_lineNumber = instance.options.sub_lineNumber;
 	var add_lineNumber = instance.options.add_lineNumber;
 	var total_lineNumber = instance.options.total_lineNumber;
-	var line_widget = instance.addLineWidget(comment_lineNumber, makeTextArea(user, comment, codesugg_user), {above: true, noHScroll: true});
+	var line_widget = instance.addLineWidget(comment_lineNumber, makeTextArea(user, comment, codesugg_user, elementId), {above: true, noHScroll: true});
 
 	// Get the textarea element and its value
 	var code = instance.options.code_suggestion;
 
     // Initialize CodeMirror with the textarea and set the code
-    var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("codeEditor"), {
+    var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("codeEditor"+elementId), {
       lineNumbers: true,
 	  firstLineNumber: comment_lineNumber,
     });
