@@ -272,7 +272,6 @@ def conclusion():
     elif exp_type == 'files_experiment2':
         experiments_concluded['AIInCorr-test'] += 1
 
-    conn.close()
     #conclusion_text = read_files("conclusion.txt")
     return render_template("conclusion.html", title='conclusion')
                            #,conclusion=conclusion_text)
