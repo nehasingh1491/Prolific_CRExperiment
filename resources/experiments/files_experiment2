@@ -1,75 +1,68 @@
-~~~~0L-CustomerManagementSystem/src/main.py
-    class EmployeeManagementSystem:
-        def __init__(self):
-            self.employees = []
+~~~~0L-SequenceManager/src/main.py
+    class SequenceUtility:
+        # Check if a string is subsequence of another string
+        def isSubSequence(s1, s2, m, n):
+            if m == 0:
+                return True
+            if n == 0:
+                return False
+            # If last characters of two strings are matching
+            if s1[m-1] == s2[n-1]:
+                return isSubSequence(s1, s2, m-1, n-1)
+            # If last characters are not matching
+            return isSubSequence(s1, s2, m, n-1)
+        
+        def count_subsequences_with_sum_zero(arr):
+            prefix_sum = 0
+            prefix_sums = {0: 1}
+            count = 0
 
-        def add_employee(self, employee):
-            self.employees.append(employee)
+            for num in arr:
+                prefix_sum += num
 
-        def remove_employee(self, employee):
-            if employee in self.employees:
-                self.employees.remove(employee)
+                if prefix_sum in prefix_sums:
+                    count += prefix_sums[prefix_sum]
 
-        def get_employee_count(self):
-            return len(self.employees)
+                if prefix_sum in prefix_sums:
+                    prefix_sums[prefix_sum] += 1
+                else:
+                    prefix_sums[prefix_sum] = 1
 
-        def get_employee_by_id(self, employee_id):
-            for employee in self.employees:
-                if employee.id == employee_id:
-                    return employee
-            return None
-
-        def get_employees_by_department(self, department):
-            department_employees = []
-            for employee in self.employees:
-                if employee.department == department:
-                    department_employees.append(employee)
-            return department_employees
-
-        def print_employee_details(self):
-            for employee in self.employees:
-                print("Employee ID:", employee.id)
-                print("Name:", employee.name)
-                print("Department:", employee.department)
-                print("Salary:", employee.salary)
-                print("=====================")
+            return count
 ~~~~
 
-~~~~0R-CustomerManagementSystem/src/main.py
-    class EmployeeManagementSystem:
-        def __init__(self):
-            self.employees = []
+~~~~0R-SequenceManager/src/main.py
+    class SequenceUtility:
+        # Check if a string is subsequence of another string
+        def isSubSequence(s1, s2, m, n):
+            if m == 0:
+                return True
+            if n == 0:
+                return False
+            # If last characters of two strings are matching
+            if s1[m-1] == s2[n-1]:
+                return isSubSequence(s1, s2, m-1, n-1)
+            # If last characters are not matching
+            return isSubSequence(s1, s2, m, n-1)
+        
+        def count_subsequences_with_sum_zero(arr):
+            prefix_sum = 0
+            prefix_sums = {0: 1}
+            count = 0
 
-        def add_employee(self, employee):
-            self.employees.append(employee)
+            for num in arr:
+                prefix_sum += num
 
-        def remove_employee(self, employee):
-            if employee in self.employees:
-                self.employees.remove(employee)
+                if prefix_sum in prefix_sums:
+                    count += prefix_sums[prefix_sum]
 
-        def get_employee_count(self):
-            return len(self.employees)
+                if prefix_sum in prefix_sums:
+                    prefix_sums[prefix_sum] += 1
+                else:
+                    prefix_sums[prefix_sum] = 1
 
-        def get_employee_by_id(self, employee_id):
-            for employee in self.employees:
-                if employee.id == employee_id:
-                    return employee
-            return None
-
-        def get_employees_by_department(self, department):
-            department_employees = []
-            for employee in self.employees:
-                if employee.department == department:
-                    department_employees.append(employee)
-            return department_employees
-
-        def print_employee_details(self):
-            for employee in self.employees:
-                print("Employee ID:", employee.id)
-                print("Name:", employee.name)
-                print("Department:", employee.department)
-                print("Salary:", employee.salary)
-                print("=====================")
+            return count
+        
         """
         Subsequences
 
@@ -85,245 +78,20 @@
         Example:
             >>> subsequences(a=1, b=5, k=3)
             [[1, 2, 3], [1, 2, 4], [1, 3, 4], [2, 3, 4]]
-            >>> subsequences(a=1, b=5, k=1)
+            >>> subsequences(a=1, b=1, k=0)
             [[]]
         """
         def subsequences(a, b, k):
             ret = []
-            for i in range(a, b + 1 - k + 1):
+            for i in range(a, b + 1 - k + 1):  
                 ret.extend(
                     [i] + rest for rest in subsequences(i + 1, b, k - 1)
                 )
-
             return ret
 *****Alice-Add a check when k is zero-54-0-1-3-Alice
 - ret = []
 + ret = []
 + if k == 0:
 + 	 return []
-*****
-~~~~
-
-~~~~1L-CandidateManagementSystem/src/main.py
-    class Candidate:
-        """
-        Class representing a candidate in an election.
-        """
-
-        def __init__(self, name, party, search_token):
-            """
-            Initialize a Candidate object.
-
-            Args:
-                name (str): The name of the candidate.
-                party (str): The political party of the candidate.
-                search_token (dict): The dictionary object to be used for partial key matching
-            """
-            self.name = name
-            self.party = party
-            self.votes = 0
-            self.membership_category = None
-            if isinstance(search_token, dict):
-                self.search_token = search_token
-            else:
-                print("Invalid input. Expecting a dictionary.")
-                self.search_token = {}
-
-        def add_vote(self):
-            """
-            Increment the vote count for the candidate.
-            """
-            self.votes += 1
-
-        def get_vote_count(self):
-            """
-            Get the vote count of the candidate.
-
-            Returns:
-                int: The vote count.
-            """
-            return self.votes
-        
-        def calculate_vote_percentage(self, total_votes):
-            if total_votes > 0:
-                percentage = (self.votes / total_votes) * 100
-                return round(percentage, 2)
-            else:
-                return 0.0
-
-        def is_leading_candidate(self, other_candidate):
-            """
-            compares the vote count of the current candidate with another candidate
-
-            Returns:
-            True - if the current candidate has more votes, indicating that they are the leading candidate
-            False - if the other candidate has more votes
-            """
-            return self.votes > other_candidate.votes
-
-        def has_majority_votes(self, total_votes):
-            """
-            checks if the current candidate has more than half of the total votes in the election
-
-            Returns:
-            True - if the candidate has a majority of votes
-            False - otherwise.
-            """
-            if total_votes > 0: ##REVIEW COMMENT-#BUG can be introduced here by not checking this condition, which leads to zero division error in case of no votes
-                return self.votes > total_votes / 2
-            else:
-                return False
-
-        def check_membership_category(self):
-            """
-            Check the membership category based on the number of votes received.
-            """
-            if self.votes >= 100: ##REVIEW COMMENT- #BUG can be introduced here by improper handling of the edge case
-                self.membership_category = "Gold"
-            elif self.votes >= 50:
-                self.membership_category = "Silver"
-            else:
-                self.membership_category = "Bronze"
-
-        def set_membership(self, membership):
-            if membership in ["Gold", "Silver", "Bronze"]:
-                self.membership = membership
-                print(f"Membership set to {membership}")
-            else:
-                print("Invalid membership category.")
-
-        def get_membership(self):
-            if self.membership:
-                return self.membership
-            else:
-                return "No membership"
-~~~~
-
-~~~~1R-CandidateManagementSystem/src/main.py
-    class Candidate:
-        """
-        Class representing a candidate in an election.
-        """
-
-        def __init__(self, name, party, search_token):
-            """
-            Initialize a Candidate object.
-
-            Args:
-                name (str): The name of the candidate.
-                party (str): The political party of the candidate.
-                search_token (dict): The dictionary object to be used for partial key matching
-            """
-            self.name = name
-            self.party = party
-            self.votes = 0
-            self.membership_category = None
-            if isinstance(search_token, dict):
-                self.search_token = search_token
-            else:
-                print("Invalid input. Expecting a dictionary.")
-                self.search_token = {}
-
-        def add_vote(self):
-            """
-            Increment the vote count for the candidate.
-            """
-            self.votes += 1
-
-        def get_vote_count(self):
-            """
-            Get the vote count of the candidate.
-
-            Returns:
-                int: The vote count.
-            """
-            return self.votes
-        
-        def calculate_vote_percentage(self, total_votes):
-            if total_votes > 0:
-                percentage = (self.votes / total_votes) * 100
-                return round(percentage, 2)
-            else:
-                return 0.0
-
-        def is_leading_candidate(self, other_candidate):
-            """
-            compares the vote count of the current candidate with another candidate
-
-            Returns:
-            True - if the current candidate has more votes, indicating that they are the leading candidate
-            False - if the other candidate has more votes
-            """
-            return self.votes > other_candidate.votes
-
-        def has_majority_votes(self, total_votes):
-            """
-            checks if the current candidate has more than half of the total votes in the election
-
-            Returns:
-            True - if the candidate has a majority of votes
-            False - otherwise.
-            """
-            if total_votes > 0: ##REVIEW COMMENT-#BUG can be introduced here by not checking this condition, which leads to zero division error in case of no votes
-                return self.votes > total_votes / 2
-            else:
-                return False
-
-        def check_membership_category(self):
-            """
-            Check the membership category based on the number of votes received.
-            """
-            if self.votes >= 100: ##REVIEW COMMENT- #BUG can be introduced here by improper handling of the edge case
-                self.membership_category = "Gold"
-            elif self.votes >= 50:
-                self.membership_category = "Silver"
-            else:
-                self.membership_category = "Bronze"
-
-        def set_membership(self, membership):
-            if membership in ["Gold", "Silver", "Bronze"]:
-                self.membership = membership
-                print(f"Membership set to {membership}")
-            else:
-                print("Invalid membership category.")
-
-        def get_membership(self):
-            if self.membership:
-                return self.membership
-            else:
-                return "No membership"
-
-        """
-        Retrieve the value corresponding to a key or partial key.
-        The keys are sorted alphabetically to ensure the correct match is found.
-
-        Args:
-            key (str): The key or partial key to be matched.
-
-        Returns:
-            Any: The value corresponding to the matched key or partial key.
-        """
-        def retrieve_value_using_token(self, key):
-            if not isinstance(key, str):
-                print("Invalid key. Expecting a string.")
-                return None
-            sorted_keys = sorted(self.search_token.keys())
-            matching_key = None
-            for k in sorted_keys:
-                if k.startswith(key):
-                    matching_key = k
-                    break
-            if matching_key != None:
-                return self.search_token.get(matching_key)
-            else:
-                return None
-
-*****Alice-Use next and a generator expression instead of a loop to iterate over the sorted keys. This approach allows you to find the matching key in a more concise manner without the need for an explicit loop.-109-0-5-5-Alice
-- matching_key = None
-- for k in sorted_keys:
--    if k.startswith(key):
--        matching_key = k
--        break
-+ matching_key = next((k for k in sorted_keys if k.startswith(key)))
 *****
 ~~~~
