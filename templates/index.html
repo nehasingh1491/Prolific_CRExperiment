@@ -67,13 +67,13 @@
             <p>In this experiment:</p>
             <ul>
                 <li>We ask you to perform <strong>one code review</strong>.</li> <br>
-                <li>As an appreciation of your help, <strong>we donate 5 USD</strong> to a non-profit organization on your behalf (more about this later on this page).</li><br>
+                <li>As an appreciation of your help, <strong>we donate 5 USD</strong> to a non-profit organization on your behalf.</li><br>
                 <li><strong>Python knowledge is required</strong>.</li><br>
                 <li>Your data is collected and used in <strong>anonymized</strong> form. Hence, we cannot link your answers back to you.</li>
             </ul>
             </div>
 
-            <fieldset id="fieldset_question_0" class="container_radio_buttons">
+            <!-- <fieldset id="fieldset_question_0" class="container_radio_buttons">
             <h3>Donation on your behalf</h3>
                 <p>As mentioned above, to thank you for your participation in the experiment, we are going to donate 5 USD (or its equivalent) to a non-profit organization on your behalf.</p>
 
@@ -91,8 +91,15 @@
                 <p>(*) We reserve the right to not accept the organization you specify, in case the organization's mission does not align with the ethical values of our research team or it is not possible to make a donation to this organization. <br>
                 In this case, we will donate the amount to one of the first five organizations at random.</p>
 
-            </fieldset>
+            </fieldset> -->
 
+            <div style="border: 1px solid;background-color: beige;">
+                <h3>What is code review?</h3>
+                <p>Code review is the process of examining and analyzing a piece of code written by another developer to identify issues, provide feedback, and ensure that the code follows best practices. </p>
+                <p>As a reviewer, your role is to carefully go through the code, understand its functionality, and assess whether it meets coding standards, is efficient, and doesn't contain bugs. This helps maintain code quality, catch potential problems early, and promote collaboration among team members. Your feedback aims to improve the code's readability, maintainability, and overall reliability.</p>
+                <br>
+            </div>
+            
             <label><input type="radio" name="data_policy" id="data_policy_yes" value="0" class="option-input radio" required>I agree with the <a href="{{url_for('data_policy')}}" target="_blank">data handling policy</a></label><br><br>
 
             <p>Thank you and we hope you will enjoy participating in our study!</p>

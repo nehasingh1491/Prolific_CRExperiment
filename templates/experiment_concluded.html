@@ -8,27 +8,27 @@
         
         {% if data == "Alice" %}
             <fieldset id="fieldset_post_experiment_que1_1" class="container_radio_buttons">
-                <p> To what extent the fact that, the suggested fix was authored by Human rather than AI influenced your decision? <br>
-                <label><input type="radio" name="question_agree" id="question_agree_a0" value="0" class="option-input radio" required>Strongly Disagree</label><br>
-                <label><input type="radio" name="question_agree" id="question_agree_a1" value="1" class="option-input radio">Disagree</label><br>
-                <label><input type="radio" name="question_agree" id="question_agree_a2" value="2" class="option-input radio">Neither Agree nor disagree</label><br>
-                <label><input type="radio" name="question_agree" id="question_agree_a3" value="3" class="option-input radio">Agree</label><br>
-                <label><input type="radio" name="question_agree" id="question_agree_a4" value="4" class="option-input radio">Strongly Agree</label><br>
+                <p>How much did your decision get influenced by the fact that the suggested fix was authored by a human instead of AI?<br>
+                <label><input type="radio" name="question_agree" id="question_agree_a0" value="0" class="option-input radio" required>Not at all influenced</label><br>
+                <label><input type="radio" name="question_agree" id="question_agree_a1" value="1" class="option-input radio">Slightly influenced</label><br>
+                <label><input type="radio" name="question_agree" id="question_agree_a2" value="2" class="option-input radio">Moderately influenced</label><br>
+                <label><input type="radio" name="question_agree" id="question_agree_a3" value="3" class="option-input radio">Highly influenced</label><br>
+                <label><input type="radio" name="question_agree" id="question_agree_a4" value="4" class="option-input radio">Extremely influenced</label><br>
             </fieldset>
         {% else -%}
             <fieldset id="fieldset_post_experiment_que1_2" class="container_radio_buttons">
-                <p> To what extent the fact that, the suggested fix was authored by AI rather than Human influenced your decision? <br>
-                <label><input type="radio" name="question_agree" id="question_agree1_a0" value="0" class="option-input radio" required>Strongly Disagree</label><br>
-                <label><input type="radio" name="question_agree" id="question_agree1_a1" value="1" class="option-input radio">Disagree</label><br>
-                <label><input type="radio" name="question_agree" id="question_agree1_a2" value="2" class="option-input radio">Neither Agree nor disagree</label><br>
-                <label><input type="radio" name="question_agree" id="question_agree1_a3" value="3" class="option-input radio">Agree</label><br>
-                <label><input type="radio" name="question_agree" id="question_agree1_a4" value="4" class="option-input radio">Strongly Agree</label><br>
+                <p> How much did your decision get influenced by the fact that the suggested fix was authored by a AI instead of Human? <br>
+                <label><input type="radio" name="question_agree" id="question_agree1_a0" value="0" class="option-input radio" required>Not at all influenced</label><br>
+                <label><input type="radio" name="question_agree" id="question_agree1_a1" value="1" class="option-input radio">Slightly influenced</label><br>
+                <label><input type="radio" name="question_agree" id="question_agree1_a2" value="2" class="option-input radio">Moderately influenced</label><br>
+                <label><input type="radio" name="question_agree" id="question_agree1_a3" value="3" class="option-input radio">Highly influenced</label><br>
+                <label><input type="radio" name="question_agree" id="question_agree1_a4" value="4" class="option-input radio">Extremely influenced</label><br>
             </fieldset>
         {% endif %}
             
         <br>
         <fieldset id="fieldset_post_experiment_que2" class="container_textarea"><p> Please ellaborate your answer? <br>
-            <label><textarea id="post_experiment_que2" name="post_experiment_que2" style="height: 50px; width: 100%;"></textarea></label>
+            <label><textarea id="post_experiment_que2" name="post_experiment_que2" style="height: 50px; width: 100%;" required></textarea></label>
         </fieldset>
         <br>
 

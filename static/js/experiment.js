@@ -27,8 +27,11 @@ function initMergely(elementId, height, contextHeight, width, lineNumberLeft, co
 		fadein: '',
 		cmsettings: { 
 			readOnly: true, 
-			mode: "python", 
-			autoresize: false, 
+			//mode: "python", 
+			mode: {name: "python",
+			version: 3,
+			singleLineStringErrors: false},
+			autoresize: true, 
 			lineWrapping: true, 
 			gutters: ["remarks", "CodeMirror-linenumbers"]},
 		lhs: function(setValue) {
