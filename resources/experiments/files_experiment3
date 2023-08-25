@@ -1,0 +1,132 @@
+~~~~0L-SequenceManager/src/main.py
+class SequenceUtility:
+    #Check if a string is subsequence of another string
+    def isSubSequence(s1, s2, m, n):
+        if m == 0:
+            return True
+        if n == 0:
+            return False
+        # If last characters of two strings are matching
+        if s1[m-1] == s2[n-1]:
+            return isSubSequence(s1, s2, m-1, n-1)
+        # If last characters are not matching
+        return isSubSequence(s1, s2, m, n-1)
+    
+    def count_subsequences_with_sum_zero(arr):
+        prefix_sum = 0
+        prefix_sums = {0: 1}
+        count = 0
+
+        for num in arr:
+            prefix_sum += num
+
+            if prefix_sum in prefix_sums:
+                count += prefix_sums[prefix_sum]
+
+            if prefix_sum in prefix_sums:
+                prefix_sums[prefix_sum] += 1
+            else:
+                prefix_sums[prefix_sum] = 1
+
+        return count
+    
+    def print_subsequences(s, current="", index=0):
+        # Print all subsequences of a string.
+        
+        # Args:
+        #     s (str): The input string.
+        #     current (str): The current subsequence being formed.
+        #     index (int): The current index in the input string.
+        
+        # Returns:
+        #     None (prints subsequences)
+        if index == len(s):
+            print(current)
+            return
+        # Include the current character
+        print_subsequences(s, current + s[index], index + 1)
+        # Exclude the current character
+        print_subsequences(s, current, index + 1)
+~~~~
+
+~~~~0R-SequenceManager/src/main.py
+class SequenceUtility:
+    #Check if a string is subsequence of another string
+    def isSubSequence(s1, s2, m, n):
+        if m == 0:
+            return True
+        if n == 0:
+            return False
+        # If last characters of two strings are matching
+        if s1[m-1] == s2[n-1]:
+            return isSubSequence(s1, s2, m-1, n-1)
+        # If last characters are not matching
+        return isSubSequence(s1, s2, m, n-1)
+    
+    def count_subsequences_with_sum_zero(arr):
+        prefix_sum = 0
+        prefix_sums = {0: 1}
+        count = 0
+
+        for num in arr:
+            prefix_sum += num
+
+            if prefix_sum in prefix_sums:
+                count += prefix_sums[prefix_sum]
+
+            if prefix_sum in prefix_sums:
+                prefix_sums[prefix_sum] += 1
+            else:
+                prefix_sums[prefix_sum] = 1
+
+        return count
+    
+    def print_subsequences(s, current="", index=0):
+        # Print all subsequences of a string.
+        
+        # Args:
+        #     s (str): The input string.
+        #     current (str): The current subsequence being formed.
+        #     index (int): The current index in the input string.
+        
+        # Returns:
+        #     None (prints subsequences)
+        if index == len(s):
+            print(current)
+            return
+        # Include the current character
+        print_subsequences(s, current + s[index], index + 1)
+        # Exclude the current character
+        print_subsequences(s, current, index + 1)
+    
+    """
+    Subsequences of length k in range [a, b]
+
+    Input:
+        a: An int
+        b: An int
+        k: A positive int
+
+    Output:
+        A list of all length-k ascending sequences of ints in range(a, b)
+
+    Example:
+        >>> subsequences(a=1, b=5, k=3)
+        [[1, 2, 3], [1, 2, 4], [1, 3, 4], [2, 3, 4]]
+        >>> subsequences(a=1, b=1, k=0)
+        [[]]
+    """
+    def subsequences(a, b, k):
+        ret = []
+        for i in range(a, b + 1 - k + 1):  
+            ret.extend(
+                [i] + rest for rest in subsequences(i + 1, b, k - 1)
+            )
+        return ret
+*****Alice-Add a check when k is zero-54-0-1-3-Bot
+- ret = []
++ ret = []
++ if k == 0:
++ 	 return [[]]
+*****
+~~~~
