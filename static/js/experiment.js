@@ -255,8 +255,10 @@ function makeTextArea(user, user_comment, codesugg_user, elementId){
 	var user_reply = document.createElement("div");
 	user_reply.style.marginBottom = "10px";
 	user_reply.style.backgroundColor = "#F5F5F5"
-	user_reply.style.marginLeft = "-5px";
-	user_reply.style.marginRight = "-5px";
+	// user_reply.style.marginLeft = "-5px";
+	// user_reply.style.marginRight = "-5px";
+	user_reply.style.alignItems = "center";
+	user_reply.style.display = "flex";
 	var img2= user_reply.appendChild(document.createElement("img"));
 	img2.src = "/static/neutral_avatar.png";
 	img2.alt = "User Avatar";
@@ -264,15 +266,22 @@ function makeTextArea(user, user_comment, codesugg_user, elementId){
 	img2.style.width = "30px";
 	img2.style.height = "30px";
 	img2.style.borderRadius = "55%";
+	var username = user_reply.appendChild(document.createElement("span"));
+	username.innerHTML = "You";
+	username.style.fontWeight = "bold";
+	//username.style.marginLeft = "15px";
+	username.style.fontSize = "16px";
+	username.style.fontFamily = "Helvetica";
 	var textArea = user_reply.appendChild(document.createElement("textarea"));
 	textArea.id = "user_reply";
 	textArea.placeholder = "Reply...";
 	textArea.style.height = "20px";
-	textArea.style.width = "90%";
-	textArea.style.marginLeft = "5px";
+	textArea.style.width = "70%";
+	textArea.style.marginLeft = "10px";
 	textArea.style.border = "1px solid grey";
 	textArea.style.borderRadius = "5px";
 	textArea.style.resize = "none";
+	textArea.style.marginBottom = "10px";
 	var button2 = user_reply.appendChild(document.createElement("button"));
 	button2.innerHTML = "Comment";
 	button2.type = "button";
@@ -289,8 +298,10 @@ function makeTextArea(user, user_comment, codesugg_user, elementId){
 	var user_reply1 = document.createElement("div");
 	user_reply1.style.marginBottom = "10px";
 	user_reply1.style.backgroundColor = "#F5F5F5"
-	user_reply1.style.marginLeft = "-5px";
-	user_reply1.style.marginRight = "-5px";
+	// user_reply1.style.marginLeft = "-5px";
+	// user_reply1.style.marginRight = "-5px";
+	user_reply1.style.alignItems = "center";
+	user_reply1.style.display = "flex";
 	var div = document.createElement("div");
 	div.style.display= "inline-flex";
   	div.style.alignItems= "center"; 
@@ -301,12 +312,19 @@ function makeTextArea(user, user_comment, codesugg_user, elementId){
 	img3.style.width = "30px";
 	img3.style.height = "30px";
 	img3.style.borderRadius = "55%";
+	var username = div.appendChild(document.createElement("span"));
+	username.innerHTML = "You";
+	username.style.fontWeight = "bold";
+	//username.style.marginLeft = "15px";
+	username.style.fontSize = "16px";
+	username.style.fontFamily = "Helvetica";
 	var para_reply = div.appendChild(document.createElement("p"));
 	para_reply.id = "para_reply";
 	para_reply.style.fontSize = "15px";
 	para_reply.style.fontFamily = "Arial";
 	para_reply.style.marginLeft = "25px";
 	para_reply.style.wordBreak = "break-all";
+	para_reply.style.marginBottom = "10px";
 	var button3 = div.appendChild(document.createElement("button"));
 	button3.innerHTML = "Edit";
 	button3.type = "button";
@@ -328,12 +346,14 @@ function makeTextArea(user, user_comment, codesugg_user, elementId){
 		if(reply != ""){
 			user_reply.style.display = "none";
 			para_reply.innerHTML = reply;
-			user_reply1.style.display = "block";
+			//user_reply1.style.display = "block";
+			user_reply1.style.display = "flex";
 		}
 	};
 
 	button3.onclick = function(){
-		user_reply.style.display = "block";
+		//user_reply.style.display = "block";
+		user_reply.style.display = "flex";
 		user_reply1.style.display = "none";
 	};
 	
