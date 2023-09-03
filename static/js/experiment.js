@@ -1,4 +1,5 @@
 var log_records = [];  // Array of log records returned to Flask
+var log_remarks = [];  // Array of remarks to be shown again in the second review
 
 var reviewRemarks = {};
 
@@ -14,9 +15,12 @@ $(window).on("load", function(){
         var myData = JSON.stringify(data);
 
         $("#hidden_log").val(myData);
+		var string_remarks = JSON.stringify(log_remarks);
+        sessionStorage.setItem("remarks", string_remarks);
     });
 });
 
+var hunks = [];
 
 function initMergely(elementId, height, contextHeight, width, lineNumberLeft, contentLeft, lineNumberRight, contentRight, prefixLineCount, prefix, suffix,
 	comment_user, codesugg_user, comment, comment_lineNumber, sub_lineNumber, add_lineNumber, total_lineNumber, code_suggestion_L, code_suggestion_R) {
@@ -71,6 +75,7 @@ function initMergely(elementId, height, contextHeight, width, lineNumberLeft, co
 				editor_right.on("change", openCommentBox);
 			}
 			editor_right.on("gutterClick", handleGutterClick);
+			editor_left.on("gutterClick", handleGutterClick);
 			editor_left.hunkId = elementId.replace('#compare', '');
 			editor_right.hunkId = elementId.replace('#compare', '');
 			editor_left.hunkSide = 0;
@@ -201,161 +206,250 @@ function makeTextArea(user, user_comment, codesugg_user, elementId){
 	item1.style.borderBottom = "1px solid grey";
 	item1.style.padding = "5px";
 	var icon = item1.appendChild(document.createElement("span"));
-	icon.innerHTML = "Suggested changes";
+	icon.innerHTML = "Suggested Code Fix";
 	icon.style.fontSize = "14px";
 	icon.style.color = "grey";
 	icon.style.padding= "8px 16px";
 	icon.style.fontFamily = "Noto sans-serif";
 	var item2 = list.appendChild(document.createElement("li"));
-	var textArea = item2.appendChild(document.createElement("textarea"));
+	var textArea = document.createElement("textarea");
 	textArea.id = "codeEditor"+elementId;
-	textArea.style.resize = "none";
+	item2.appendChild(textArea);
 	item2.style.borderBottom = "1px solid grey";
 	var item3 = list.appendChild(document.createElement("li"));
 	item3.style.padding = "5px";
 	item3.style.textAlign = "right";
 	
-	var commitText = item3.appendChild(document.createElement("textarea")); //hidden textarea for seeting commit decision
+	var commitText = item3.appendChild(document.createElement("p")); //hidden textarea for seeting commit decision
 	commitText.id = "hiddenCommitDec";
 	commitText.style.display="none";
 
 	var button1 = item3.appendChild(document.createElement("button"));
 	button1.type="button";
-	button1.innerHTML = "Commit Changes";
+	button1.innerHTML = "Approve";
 	button1.id="commit";
 	button1.style.borderRadius= "5px";
 	button1.style.backgroundColor= "#e7e7e7";
     button1.style.color= "black";
     button1.style.fontSize= "14px";
 	button1.style.border = "1px solid grey";
-	marker.appendChild(list);
-
-	button1.onclick = function(){
-		if (button1.innerHTML == "Commit Changes"){
-			logData("commit changes", "yes");
-			button1.innerHTML = "Undo Commit";
-			messageDiv.innerHTML = "Changes Committed";
-			messageDiv.style.color = "green";
-			messageDiv.style.fontSize = "14px";
-			messageDiv.style.fontStyle = "bold";
-			messageDiv.style.fontFamily = "Noto sans-serif";
-			document.getElementById("hiddenCommitDec").value = "committed";
-		}else if (button1.innerHTML == "Undo Commit"){
-			logData("undo commit", "yes");
-			button1.innerHTML = "Commit Changes";
-			messageDiv.innerHTML = "Changes Reverted";
-			messageDiv.style.color = "red";
-			messageDiv.style.fontSize = "14px";
-			messageDiv.style.fontStyle = "bold";
-			messageDiv.style.fontFamily = "Noto sans-serif";
-			document.getElementById("hiddenCommitDec").value = "";
-		}
-	}
-
-	var user_reply = document.createElement("div");
-	user_reply.style.marginBottom = "10px";
-	user_reply.style.backgroundColor = "#F5F5F5"
-	// user_reply.style.marginLeft = "-5px";
-	// user_reply.style.marginRight = "-5px";
-	user_reply.style.alignItems = "center";
-	user_reply.style.display = "flex";
-	var img2= user_reply.appendChild(document.createElement("img"));
-	img2.src = "/static/neutral_avatar.png";
-	img2.alt = "User Avatar";
-	img2.className = "avatar";
-	img2.style.width = "30px";
-	img2.style.height = "30px";
-	img2.style.borderRadius = "55%";
-	var username = user_reply.appendChild(document.createElement("span"));
-	username.innerHTML = "You";
-	username.style.fontWeight = "bold";
-	//username.style.marginLeft = "15px";
-	username.style.fontSize = "16px";
-	username.style.fontFamily = "Helvetica";
-	var textArea = user_reply.appendChild(document.createElement("textarea"));
-	textArea.id = "user_reply";
-	textArea.placeholder = "Reply...";
-	textArea.style.height = "20px";
-	textArea.style.width = "70%";
-	textArea.style.marginLeft = "10px";
-	textArea.style.border = "1px solid grey";
-	textArea.style.borderRadius = "5px";
-	textArea.style.resize = "none";
-	textArea.style.marginBottom = "10px";
-	var button2 = user_reply.appendChild(document.createElement("button"));
-	button2.innerHTML = "Comment";
-	button2.type = "button";
+	button1.style.cursor = "pointer";
+	var button2 = item3.appendChild(document.createElement("button"));
+	button2.type="button";
+	button2.innerHTML = "Decline";
+	button2.id="commit";
 	button2.style.borderRadius= "5px";
-    button2.style.backgroundColor= "#e7e7e7";
+	button2.style.backgroundColor= "#e7e7e7";
     button2.style.color= "black";
     button2.style.fontSize= "14px";
 	button2.style.border = "1px solid grey";
-	button2.style.marginTop = "5px";
-	button2.style.marginLeft = "15px";
-	user_reply.style.alignItems = "center";
-	marker.appendChild(user_reply);
+	button2.style.marginLeft = "5px";
+	button2.style.cursor = "pointer";
+	marker.appendChild(list);
 
-	var user_reply1 = document.createElement("div");
-	user_reply1.style.marginBottom = "10px";
-	user_reply1.style.backgroundColor = "#F5F5F5"
-	// user_reply1.style.marginLeft = "-5px";
-	// user_reply1.style.marginRight = "-5px";
-	user_reply1.style.alignItems = "center";
-	user_reply1.style.display = "flex";
-	var div = document.createElement("div");
-	div.style.display= "inline-flex";
-  	div.style.alignItems= "center"; 
-	var img3= div.appendChild(document.createElement("img"));
-	img3.src = "/static/neutral_avatar.png";
-	img3.alt = "User Avatar";
-	img3.className = "avatar";
-	img3.style.width = "30px";
-	img3.style.height = "30px";
-	img3.style.borderRadius = "55%";
-	var username = div.appendChild(document.createElement("span"));
-	username.innerHTML = "You";
-	username.style.fontWeight = "bold";
-	//username.style.marginLeft = "15px";
-	username.style.fontSize = "16px";
-	username.style.fontFamily = "Helvetica";
-	var para_reply = div.appendChild(document.createElement("p"));
-	para_reply.id = "para_reply";
-	para_reply.style.fontSize = "15px";
-	para_reply.style.fontFamily = "Arial";
-	para_reply.style.marginLeft = "25px";
-	para_reply.style.wordBreak = "break-all";
-	para_reply.style.marginBottom = "10px";
-	var button3 = div.appendChild(document.createElement("button"));
-	button3.innerHTML = "Edit";
-	button3.type = "button";
-	button3.style.borderRadius= "5px";
-    button3.style.backgroundColor= "#e7e7e7";
-    button3.style.color= "black";
-    button3.style.fontSize= "14px";
-	button3.style.border = "1px solid grey";
-	button3.style.marginTop = "5px";
-	button3.style.marginLeft = "15px";
-	button3.style.marginRight = "15px";
-	user_reply1.appendChild(div);
-	user_reply1.style.display = "none";
-	marker.appendChild(user_reply1);
+	button1.onclick = function(){
+		logData("commit changes", "yes");
+		messageDiv.innerHTML = "Suggested code fix approved";
+		messageDiv.style.color = "green";
+		messageDiv.style.fontSize = "14px";
+		messageDiv.style.fontStyle = "bold";
+		messageDiv.style.fontFamily = "Noto sans-serif";
+		document.getElementById("hiddenCommitDec").value = "committed";
+		button1.disabled = true;
+		button1.style.opacity = "0.5";
+		button2.disabled = false;
+		button2.style.opacity = "1";
+	}
 
 	button2.onclick = function(){
-		var reply = document.getElementById("user_reply").value;
-		logData("user_reply", reply);
-		if(reply != ""){
-			user_reply.style.display = "none";
-			para_reply.innerHTML = reply;
-			//user_reply1.style.display = "block";
-			user_reply1.style.display = "flex";
-		}
-	};
+		logData("commit changes", "no");
+		messageDiv.innerHTML = "Suggested Code Fix declined";
+		messageDiv.style.color = "red";
+		messageDiv.style.fontSize = "14px";
+		messageDiv.style.fontStyle = "bold";
+		messageDiv.style.fontFamily = "Noto sans-serif";
+		document.getElementById("hiddenCommitDec").value = "declined";
+		button2.disabled = true;
+		button2.style.opacity = "0.5";
+		button1.disabled = false;
+		button1.style.opacity = "1";
+	}
 
-	button3.onclick = function(){
-		//user_reply.style.display = "block";
-		user_reply.style.display = "flex";
-		user_reply1.style.display = "none";
-	};
+
+	var div_fb = document.createElement("div");
+	div_fb.id = "container";
+	div_fb.style.marginLeft = "20px";
+	div_fb.style.display = "inline-flex";
+	div_fb.style.alignItems = "center";
+	div_fb.style.width = "95%";
+	var span_fb = document.createElement("span");
+	span_fb.id = "text";
+	span_fb.title = "Enter to edit Feedback";
+	span_fb.style.display = "none";
+	span_fb.style.width = "95%";
+	span_fb.style.padding = "5px 5px";
+	span_fb.style.fontFamily = "Arial";
+	span_fb.style.fontSize = "16px";
+	span_fb.style.wordBreak = "break-all";
+	div_fb.appendChild(span_fb);
+	var input_fb = document.createElement("input");
+	input_fb.type = "text";
+	input_fb.id = "input";
+	input_fb.placeholder = "Provide Feedback...";
+	input_fb.style.width = "95%";
+	input_fb.style.padding = "5px 5px";
+	input_fb.style.fontFamily = "Arial";
+	input_fb.style.fontSize = "16px";
+	input_fb.style.border = "1px solid grey";
+	input_fb.style.borderRadius = "5px";
+	div_fb.appendChild(input_fb);
+
+	var submit = document.createElement("img");
+	submit.src = "/static/submit_arrow.png";
+	submit.title = "Submit feedback";
+	submit.style.width = "5%";
+	submit.style.marginLeft = "10px";
+	div_fb.appendChild(submit);
+
+	var edit = document.createElement("img");
+	edit.src = "/static/edit_button.png";
+	edit.alt = "Edit Feedback";
+	edit.style.width = "5%";
+	edit.style.marginLeft = "10px";
+	edit.style.display = "none";
+	div_fb.appendChild(edit);
+	
+	marker.appendChild(div_fb);
+
+	// span_fb.addEventListener("click", () => {
+	// 	span_fb.style.display = "none";
+	// 	input_fb.style.display = "inline-block";
+	// 	submit.style.display = "inline-block";
+	// 	input_fb.focus();
+	// });
+
+	submit.addEventListener("click", () => {
+		span_fb.textContent = input_fb.value;
+		input_fb.style.display = "none";
+		span_fb.style.display = "inline-block";
+		div_fb.style.backgroundColor = "aliceblue";
+		submit.style.display = "none";
+		edit.style.display = "inline-block";
+	});
+
+	edit.addEventListener("click", () => {
+		span_fb.style.display = "none";
+		input_fb.style.display = "inline-block";
+		submit.style.display = "inline-block";
+		edit.style.display = "none";
+		input_fb.focus();
+	});
+
+	// var user_reply = document.createElement("div");
+	// user_reply.style.marginBottom = "10px";
+	// user_reply.style.backgroundColor = "#F5F5F5"
+	// // user_reply.style.marginLeft = "-5px";
+	// // user_reply.style.marginRight = "-5px";
+	// user_reply.style.alignItems = "center";
+	// user_reply.style.display = "flex";
+	// var img2= user_reply.appendChild(document.createElement("img"));
+	// img2.src = "/static/neutral_avatar.png";
+	// img2.alt = "User Avatar";
+	// img2.className = "avatar";
+	// img2.style.width = "30px";
+	// img2.style.height = "30px";
+	// img2.style.borderRadius = "55%";
+	// var username = user_reply.appendChild(document.createElement("span"));
+	// username.innerHTML = "You";
+	// username.style.fontWeight = "bold";
+	// //username.style.marginLeft = "15px";
+	// username.style.fontSize = "16px";
+	// username.style.fontFamily = "Helvetica";
+
+	// var textArea = user_reply.appendChild(document.createElement("textarea"));
+	// textArea.id = "user_reply";
+	// textArea.placeholder = "Reply...";
+	// textArea.style.height = "20px";
+	// textArea.style.width = "70%";
+	// textArea.style.marginLeft = "10px";
+	// textArea.style.border = "1px solid grey";
+	// textArea.style.borderRadius = "5px";
+	// textArea.style.resize = "none";
+	// textArea.style.marginBottom = "10px";
+	// var button2 = user_reply.appendChild(document.createElement("button"));
+	// button2.innerHTML = "Comment";
+	// button2.type = "button";
+	// button2.style.borderRadius= "5px";
+    // button2.style.backgroundColor= "#e7e7e7";
+    // button2.style.color= "black";
+    // button2.style.fontSize= "14px";
+	// button2.style.border = "1px solid grey";
+	// button2.style.marginTop = "5px";
+	// button2.style.marginLeft = "15px";
+	// user_reply.style.alignItems = "center";
+	// marker.appendChild(user_reply);
+
+	// var user_reply1 = document.createElement("div");
+	// user_reply1.style.marginBottom = "10px";
+	// user_reply1.style.backgroundColor = "#F5F5F5"
+	// // user_reply1.style.marginLeft = "-5px";
+	// // user_reply1.style.marginRight = "-5px";
+	// user_reply1.style.alignItems = "center";
+	// user_reply1.style.display = "flex";
+	// var div = document.createElement("div");
+	// div.style.display= "inline-flex";
+  	// div.style.alignItems= "center"; 
+	// var img3= div.appendChild(document.createElement("img"));
+	// img3.src = "/static/neutral_avatar.png";
+	// img3.alt = "User Avatar";
+	// img3.className = "avatar";
+	// img3.style.width = "30px";
+	// img3.style.height = "30px";
+	// img3.style.borderRadius = "55%";
+	// var username = div.appendChild(document.createElement("span"));
+	// username.innerHTML = "You";
+	// username.style.fontWeight = "bold";
+	// //username.style.marginLeft = "15px";
+	// username.style.fontSize = "16px";
+	// username.style.fontFamily = "Helvetica";
+	// var para_reply = div.appendChild(document.createElement("p"));
+	// para_reply.id = "para_reply";
+	// para_reply.style.fontSize = "15px";
+	// para_reply.style.fontFamily = "Arial";
+	// para_reply.style.marginLeft = "25px";
+	// para_reply.style.wordBreak = "break-all";
+	// para_reply.style.marginBottom = "10px";
+	// var button3 = div.appendChild(document.createElement("button"));
+	// button3.innerHTML = "Edit";
+	// button3.type = "button";
+	// button3.style.borderRadius= "5px";
+    // button3.style.backgroundColor= "#e7e7e7";
+    // button3.style.color= "black";
+    // button3.style.fontSize= "14px";
+	// button3.style.border = "1px solid grey";
+	// button3.style.marginTop = "5px";
+	// button3.style.marginLeft = "15px";
+	// button3.style.marginRight = "15px";
+	// user_reply1.appendChild(div);
+	// user_reply1.style.display = "none";
+	// marker.appendChild(user_reply1);
+
+	// button2.onclick = function(){
+	// 	var reply = document.getElementById("user_reply").value;
+	// 	logData("user_reply", reply);
+	// 	if(reply != ""){
+	// 		user_reply.style.display = "none";
+	// 		para_reply.innerHTML = reply;
+	// 		//user_reply1.style.display = "block";
+	// 		user_reply1.style.display = "flex";
+	// 	}
+	// };
+
+	// button3.onclick = function(){
+	// 	//user_reply.style.display = "block";
+	// 	user_reply.style.display = "flex";
+	// 	user_reply1.style.display = "none";
+	// };
 	
 	return marker;
 }
@@ -379,6 +473,7 @@ function openCommentBox(instance, lineNumber, gutter, clickEvent){
     var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("codeEditor"+elementId), {
       lineNumbers: true,
 	  firstLineNumber: comment_lineNumber,
+	  theme: "MyCustomEditor",
     });
     myCodeMirror.setValue(code); // Set the initial code in the editor
 
@@ -400,7 +495,8 @@ function handleGutterClick(instance, lineNumber, gutter, clickEvent){
 	}
 
     if (realLineNumber in reviewRemarks[instance.hunkId]){
-    	prevMsg = reviewRemarks[instance.hunkId][realLineNumber].node.lastChild.textContent
+    	prevMsg = reviewRemarks[instance.hunkId][realLineNumber].node.lastChild.textContent;
+		document.getElementById("review-remark").value = prevMsg;
 	}
 
     var msg = prompt("Please enter review remark", prevMsg);
@@ -418,6 +514,9 @@ function handleGutterClick(instance, lineNumber, gutter, clickEvent){
 			reviewRemarks[instance.hunkId][realLineNumber].clear()
 			// instance.setGutterMarker(lineNumber, "remarks", null);
 			delete reviewRemarks[instance.hunkId][realLineNumber];
+			if(isRemarkPresent(log_remarks, lineNumber, instance.hunkId)) {
+				log_remarks = removeRemark(log_remarks, instance.hunkSide, lineNumber, instance.hunkId);
+			}
     	} else {
     		// UPDATE COMMENT
             logData("updateComment",
@@ -426,6 +525,9 @@ function handleGutterClick(instance, lineNumber, gutter, clickEvent){
     		// reviewRemarks[instance.hunkId][realLineNumber] = msg;
 			reviewRemarks[instance.hunkId][realLineNumber].node.lastChild.textContent = msg
 			reviewRemarks[instance.hunkId][realLineNumber].changed()
+			if(isRemarkPresent(log_remarks, lineNumber, instance.hunkId)) {
+				log_remarks = updateRemark(log_remarks, instance.hunkSide, lineNumber, instance.hunkId, msg);
+			}
     	}
     } else {
     	if (msg == "") {
@@ -440,7 +542,52 @@ function handleGutterClick(instance, lineNumber, gutter, clickEvent){
 
     		var line_widget = instance.addLineWidget(lineNumber, makeMarker(msg), {coverGutter: true, noHScroll: true});
     		reviewRemarks[instance.hunkId][realLineNumber] = line_widget;
+			reviewRemarks[instance.hunkId][realLineNumber].node.lastChild.textContent = msg
+			log_remarks.push(new Remark(lineNumber, msg, instance.hunkId, instance.hunkSide));
+			//reviewRemarks[instance.hunkId][realLineNumber].node.lastChild.textContent = msg
             // addComment(lineNumber, msg, instance.hunkId, instance.hunkSide)
 		}
     }
+}
+
+function Remark(line, message, hunk, side) {
+	this.line = line;
+	this.message = message;
+	this.hunk = hunk;
+	this.side = side;
+}
+
+function isRemarkPresent(remarks_list, line, hunk) {
+	for(i = 0; i < remarks_list.length; i++) {
+		if(remarks_list[i].hunk == hunk) {
+			if(remarks_list[i].line == line) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+function updateRemark(remarks_list, side, line, hunk, message) {
+	for(i = 0; i < remarks_list.length; i++) {
+		if(remarks_list[i].hunk == hunk && remarks_list[i].side == side) {
+			if(remarks_list[i].line == line) {
+				remarks_list[i].message = message;
+				return remarks_list;
+			}
+		}
+	}
+	return null;
+}
+
+function removeRemark(remarks_list, side, line, hunk) {
+	for(i = 0; i < remarks_list.length; i++) {
+		if(remarks_list[i].hunk == hunk && remarks_list[i].side == side) {
+			if(remarks_list[i].line == line) {
+				remarks_list.splice(i, 1);
+				return remarks_list;
+			}
+		}
+	}
+	return null;
 }

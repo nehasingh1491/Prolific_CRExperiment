@@ -435,7 +435,8 @@ jQuery.extend(Mgly.CodeMirrorDiffView.prototype, {
 				var content_height = h;
 				var self = jQuery(el);
 				self.find('.mergely-column').css({ width: content_width + 'px' });
-				self.find('.mergely-column, .mergely-canvas, .mergely-margin, .mergely-column textarea, .CodeMirror-scroll, .cm-s-default').css({ height: content_height + 'px' });
+				//self.find('.mergely-column, .mergely-canvas, .mergely-margin, .mergely-column textarea, .CodeMirror-scroll, .cm-s-default').css({ height: content_height + 'px' });
+				self.find('.mergely-column, .mergely-canvas, .mergely-margin, .mergely-column textarea, .cm-s-default').css({ height: content_height + 'px' });
 				self.find('.mergely-canvas').css({ height: content_height + 'px' });
 				self.find('.mergely-column textarea').css({ width: content_width + 'px' });
 				self.css({ width: w, height: h, clear: 'both' });

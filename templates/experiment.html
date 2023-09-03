@@ -73,8 +73,11 @@
             if(document.getElementById("hiddenCommitDec").value=="committed"){
                 document.getElementById('id01').style.display='block';
             }
-            else{
+            else if(document.getElementById("hiddenCommitDec").value=="declined"){
                 document.getElementById('id02').style.display='block';
+            }
+            else{
+                document.getElementById('id00').style.display='block';
             }
         }
     </script>
@@ -93,10 +96,11 @@
         <p><h1>Instructions</h1></p>
 
         <p>We are now going to show you the code changes to review. The old version of the code is on the left, the new version with code changes by the Developer is on the right.</p>
-        <p>For the scientific validity of this experiment, it is vital that the review task is taken <b>very seriously</b>.</p>
+        <!-- <p>For the scientific validity of this experiment, it is vital that the review task is taken <b>very seriously</b>.</p> -->
 
-        <p>You have been assigned the <mark><b>role of a second reviewer</b></mark> for a code review process. Your task is to carefully assess the code changes and review feedback provided by the First reviewer. Your input is valuable in ensuring the code's quality.</p>
-        <ul>
+        <p>You have been assigned the <mark><b>role of a Final reviewer</b></mark> for a code change. Your task is to carefully assess the code changes and review the feedback provided by other reviewers.</p>
+         <!-- Your input is valuable in ensuring the code's quality.</p> -->
+        <!-- <ul>
             <li><b>Assess the Code Changes:</b></li>
                 <ul>
                     <li>Take time to understand the code changes made by the developer (highlighted in green on the right side). 
@@ -112,22 +116,20 @@
                 <ul>
                     <li>Review the 'Code Changes' made by Developer to ensure that it's technically accurate and functional as intended.</li>
                     <li>Review the 'Suggested Code Fix' provided by the First reviewer</li>
-                    <!-- <li>Verify that the proposed changes address the identified issues from the First review.</li> -->
                 </ul>
             <br><li><b>Make a Decision:</b></li>
             <ul>
                 <li>Based on your review and analysis, make a decision on whether the 'Suggested Code Fix' provided by the First reviewer are acceptable or need further refinement.</li>
                 <li>You can either accept the code changes by clicking on <mark><b>'Commit Changes' button</b></mark>, or suggest further improvements by providing <mark><b>comment below the Sugested Code Fix.</b></mark></li>
             </ul>
-            <!-- <li>Provide Constructive Feedback:</li>     
-            <ul>
-                <li>If you agree with the First reviewer's feedback, you can indicate your agreement and provide additional insights if needed.</li>
-                <li>If you have differing opinions, explain your viewpoint and provide clear reasons for your assessment.</li>
-            </ul>   -->
-        </ul> 
-        <p>Please assume that the code compiles.</p>
-        
-        <p><b>Note:</b> <u>Kindly utilize a laptop or desktop to conduct this experiment.</u></p><br>
+        </ul>  -->
+        <ul>
+            <li>To add a review remark, click on the corresponding line number. To edit/delete a review mark, click on it again and edit/delete the remark's text.</li><br>
+            <li>Please focus on the functional issues that affected the code.</li><br>
+            <li>Please assume that the code compiles.</li><br>
+            <li>Once you confirm to conclude the review, it will not be possible to add, delete, or modify your review anymore.</li><br>
+        </ul>
+        <p><b>Note:</b> <u>Kindly utilize a laptop or desktop and Chrome browser to conduct this experiment.</u></p><br>
 
 
         <!-- <p>We are now going to show you the code changes to review. The old version of the code is on the left, the new version is on the right. The code is already reviewed by first reviewer and contains review comments along with code suggestion.</p>
@@ -192,7 +194,7 @@
                     <label><input type="radio" name="question_interruption_time" id="question_interruption_time_a4" value="4" class="option-input radio">more than 10 minutes</label><br>
                 </fieldset>
                 <br>
-                <fieldset id="fieldset_question_feedback2" class="container_textarea"><p> Please ellaborate on why you decided to accept or not accept the suggested code fix?</p><br>
+                <fieldset id="fieldset_question_feedback2" class="container_textarea"><p> Please elaborate on why you decided to accept or not accept the suggested code fix?</p><br>
                     <label><textarea id="qfeedback2" name="question_feedback2" style="height: 50px; width: 100%;" required></textarea></label>
                 </fieldset>
                 <br>
@@ -235,6 +237,28 @@
         
     </div>
 
+    <div id="id00" class="modal">
+
+        <form class="modal-content animate">
+            <div class="imgcontainer">
+                <span onclick="document.getElementById('id00').style.display='none'" class="close" title="Close">&times;</span>
+            </div>
+
+            <div class="container-popup">
+                <!--            <label for="uname"><b>Comment</b></label>-->
+                <!--            <input type="text" placeholder="Enter comment" name="uname" required>-->
+
+                <p>You have not made decision on the review feedback by First reviewer.</p>
+                <p>Kindly made a decision by approving or declining a Suggested Code Fix.</b></p>
+                <br>
+
+                <div class="btn-group" style="text-align: center;">
+                    <button type="button" onclick="document.getElementById('id00').style.display='none'" class="button-popup blue">Ok</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
     <div id="id01" class="modal">
 
         <form class="modal-content animate">
@@ -246,7 +270,7 @@
                 <!--            <label for="uname"><b>Comment</b></label>-->
                 <!--            <input type="text" placeholder="Enter comment" name="uname" required>-->
 
-                <p><b>You have <mark>accepted the code suggestions provided by First reviewer.</mark></b></p>
+                <p><b>You have <mark>approved the code suggestions provided by First reviewer.</mark></b></p>
                 <p> Do you want to complete the review? </p>
                 <br>
 
@@ -269,7 +293,7 @@
                 <!--            <label for="uname"><b>Comment</b></label>-->
                 <!--            <input type="text" placeholder="Enter comment" name="uname" required>-->
 
-                <p><b>You have <mark>not accepted the code suggestions provided by First reviewer.</mark></b></p>
+                <p><b>You have <mark>declined the code suggestions provided by First reviewer.</mark></b></p>
                 <p> Do you want to complete the review? </p>
                 <br>
 
