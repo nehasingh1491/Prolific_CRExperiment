@@ -485,8 +485,35 @@ function openCommentBox(instance, lineNumber, gutter, clickEvent){
 	}
 }
 
-function handleGutterClick(instance, lineNumber, gutter, clickEvent){
-	var info = instance.lineInfo(lineNumber);
+var instance;
+var lineNumber;
+
+function handleGutterClick(instancetest, lineNumbertest, gutter, clickEvent){
+	instance = instancetest;
+	lineNumber = lineNumbertest;
+	var realLineNumber = lineNumber + instance.options.firstLineNumber;
+
+	if (!reviewRemarks[instance.hunkId]) {
+		reviewRemarks[instance.hunkId] = {};
+	}
+
+    if (realLineNumber in reviewRemarks[instance.hunkId]){
+    	prevMsg = reviewRemarks[instance.hunkId][realLineNumber].node.lastChild.textContent;
+		document.getElementById("review-remark").value = prevMsg;
+	}else{
+		document.getElementById("review-remark").value = "";
+	}
+
+    $("#remark-popup-window").show();
+}
+
+function recordRemark() {
+
+	var msg = document.getElementById("review-remark").value;
+
+	document.getElementById("review-remark").value = "";
+
+	//var info = instance.lineInfo(lineNumber);
     var prevMsg = "";
 	var realLineNumber = lineNumber + instance.options.firstLineNumber;
 
@@ -498,13 +525,6 @@ function handleGutterClick(instance, lineNumber, gutter, clickEvent){
     	prevMsg = reviewRemarks[instance.hunkId][realLineNumber].node.lastChild.textContent;
 		document.getElementById("review-remark").value = prevMsg;
 	}
-
-    var msg = prompt("Please enter review remark", prevMsg);
-
-    if (msg == null) {
-    	return
-    }
-
 	// instance.addLineWidget(lineNumber, makeMarker(msg), {coverGutter: true, noHScroll: true});
 
     if (realLineNumber in reviewRemarks[instance.hunkId]) {
@@ -523,6 +543,11 @@ function handleGutterClick(instance, lineNumber, gutter, clickEvent){
                 `${instance.hunkId}${instance.hunkSide}-${realLineNumber}-${msg}`)
     		// info.gutterMarkers.remarks.title = msg;
     		// reviewRemarks[instance.hunkId][realLineNumber] = msg;
+			reviewRemarks[instance.hunkId][realLineNumber].clear()
+			delete reviewRemarks[instance.hunkId][realLineNumber];
+			var line_widget = instance.addLineWidget(lineNumber, makeMarker(msg), {coverGutter: true, noHScroll: true});
+    		reviewRemarks[instance.hunkId][realLineNumber] = line_widget;
+
 			reviewRemarks[instance.hunkId][realLineNumber].node.lastChild.textContent = msg
 			reviewRemarks[instance.hunkId][realLineNumber].changed()
 			if(isRemarkPresent(log_remarks, lineNumber, instance.hunkId)) {

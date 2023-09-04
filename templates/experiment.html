@@ -312,17 +312,17 @@
                 <span onclick="document.getElementById('remark-popup-window').style.display='none'" class="close" title="Close">&times;</span>
             </div>
 
-            <div class="container-popup">
+            <div class="container-popup" style="margin: 25px;">
                 <!--            <label for="uname"><b>Comment</b></label>-->
                 <!--            <input type="text" placeholder="Enter comment" name="uname" required>-->
-                <label><b>Please enter review remark:</b></label>
-                <input type="text" placeholder="Remark" name="remark" onkeypress="return runScript(event)" id="review-remark" required>
+                <label style="font-size: 18px;"><b>Please enter review remark:</b></label>
+                <input type="text" placeholder="Remark" name="remark" onkeypress="return runScript(event)" id="review-remark" required style="font-size: 18px; width: 55%; margin-left: 25px;">
 
                 <br>
 
-                <div class="btn-group" style="text-align: center;">
-                    <button type="button" onclick="document.getElementById('remark-popup-window').style.display='none'" class="button-popup blue">Cancel</button>
-                    <button type="button" onclick="document.getElementById('remark-popup-window').style.display='none'; recordRemark()" class="button-popup blue">Ok</button>
+                <div class="btn-group" style="text-align: center; margin: 25px">
+                    <button type="button" onclick="document.getElementById('remark-popup-window').style.display='none'" class="button-popup blue" style="font-size: 18px;">Cancel</button>
+                    <button type="button" onclick="document.getElementById('remark-popup-window').style.display='none'; recordRemark()" class="button-popup blue"  style="font-size: 18px;">Ok</button>
                 </div>
             </div>
         </form>
