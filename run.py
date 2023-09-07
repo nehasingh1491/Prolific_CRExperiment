@@ -359,11 +359,11 @@ def log_data(user_id: str, key: str, data: str, dt: datetime = None):
     ON CONFLICT (user_id) DO UPDATE 
     SET logs = experiment_logs.logs || '|' || excluded.logs"""
 
-    cur = conn.cursor() 
-    cur.execute(update_sql, (user_id, datetime.datetime.now(), f'{log_dt};'f'{key};'f'{data}\n'))
+    # cur = conn.cursor() 
+    # cur.execute(update_sql, (user_id, datetime.datetime.now(), f'{log_dt};'f'{key};'f'{data}\n'))
 
-    conn.commit()
-    cur.close()
+    # conn.commit()
+    # cur.close()
         
 # This function read the experiment content from experiments/ folder. Each
 # file follow the same composition rule of the experiments.
