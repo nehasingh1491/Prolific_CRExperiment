@@ -104,7 +104,7 @@ function makeMarker(msg){
 	icon.innerHTML = "!!";
 	icon.className = "lint-error-icon";
 	var name = marker.appendChild(document.createElement("span"))
-	name.innerHTML = "<b>Alice: </b>";
+	name.innerHTML = "<b>You: </b>";
 	marker.appendChild(document.createTextNode(msg));
 	marker.className = "lint-error";
 
@@ -248,7 +248,7 @@ function makeTextArea(user, user_comment, codesugg_user, elementId){
 	marker.appendChild(list);
 
 	button1.onclick = function(){
-		logData("commit changes", "yes");
+		logData("commit_changes", "yes");
 		messageDiv.innerHTML = "Suggested code fix approved";
 		messageDiv.style.color = "green";
 		messageDiv.style.fontSize = "14px";
@@ -262,7 +262,7 @@ function makeTextArea(user, user_comment, codesugg_user, elementId){
 	}
 
 	button2.onclick = function(){
-		logData("commit changes", "no");
+		logData("commit_changes", "no");
 		messageDiv.innerHTML = "Suggested Code Fix declined";
 		messageDiv.style.color = "red";
 		messageDiv.style.fontSize = "14px";
@@ -329,6 +329,7 @@ function makeTextArea(user, user_comment, codesugg_user, elementId){
 	// });
 
 	submit.addEventListener("click", () => {
+		logData("feedback", input_fb.value)
 		span_fb.textContent = input_fb.value;
 		input_fb.style.display = "none";
 		span_fb.style.display = "inline-block";

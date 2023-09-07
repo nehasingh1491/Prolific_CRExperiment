@@ -46,7 +46,7 @@ p = Parser()
 
 #added for connecting postgresql
 #conn = psycopg2.connect(host='localhost', dbname='postgres', user='postgres', password="Zurich@1491", port=5432)
-conn = psycopg2.connect(host='ec2-54-246-1-94.eu-west-1.compute.amazonaws.com', dbname='d20usq666h2m0p', user='qpursjrfhybeai', password="f9755cef7d73bb0be44eab3eb8fba472f2d6481431342821c00d3e853166cf7b", port=5432)
+#conn = psycopg2.connect(host='ec2-54-246-1-94.eu-west-1.compute.amazonaws.com', dbname='d20usq666h2m0p', user='qpursjrfhybeai', password="f9755cef7d73bb0be44eab3eb8fba472f2d6481431342821c00d3e853166cf7b", port=5432)
 
 
 def choose_experiment():
@@ -159,7 +159,6 @@ def run_experiment():
     # Choosing experiment
     cr_file, is_test = choose_experiment()
     log_data(str(user_id), "setexperimentCRtype", cr_file)
-    log_data(str(user_id), "setexperimentCRistest", str(is_test))
 
     exp_is_done = request.cookies.get('experiment-is_done', 'not_done')
     if exp_is_done != 'DONE':
@@ -207,7 +206,7 @@ def experiment_concluded():
 
         log_received_data(user_id, data)
 
-    log_data(str(user_id), "end", "cr_experiment")
+    log_data(str(user_id), "end", "code_review_task_end")
     if exp_is_done != 'DONE':
         #post_questions = read_files("post_questions.txt")
         resp = make_response(render_template('experiment_concluded.html',
@@ -335,7 +334,7 @@ def log_received_data(user_id, data):
                 dt = splitted[0]
                 action = splitted[1]
                 info = ';'.join(splitted[2:])
-                log_data(user_id, action, info, dt)
+                log_data(user_id, action, info)
         else:
             log_data(user_id, key, data[key])
 
@@ -349,7 +348,8 @@ def log_data(user_id: str, key: str, data: str, dt: datetime = None):
     date_time_obj = datetime.datetime.strptime(str(datetime.datetime.now()), '%Y-%m-%d %H:%M:%S.%f')
     with open(f'{user_id}.log', 'a') as f:
         #log_dt = dt if dt is not None else datetime.timestamp(datetime.now())
-        log_dt = dt if dt is not None else date_time_obj.time()
+        #log_dt = dt if dt is not None else date_time_obj.time()
+        log_dt = dt if dt is not None else str(datetime.datetime.now())
         f.write(f'{log_dt};'
                 f'{key};'
                 f'{data}\n')
