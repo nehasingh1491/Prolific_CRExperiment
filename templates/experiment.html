@@ -38,7 +38,7 @@
                 var width = $(window).width() - 50;
                 {% for code in codes %}
                     initMergely('#compare{{code["id"]}}',
-                        (parseInt('{{code["linecount"]}}')+parseInt('{{code["total_lineNumber"]}}')) * 18.5 + 450,
+                        (parseInt('{{code["linecount"]}}')+parseInt('{{code["total_lineNumber"]}}')) * 18.5 + 350,
                         parseInt('{{code["contextLineCount"]}}') * 18.5,
                         width,
                         parseInt('{{code["left_line_number"]}}'),
