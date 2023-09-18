@@ -48,7 +48,7 @@
             <p>Please answer the following questions before finishing the experiment:</p><br>
             <form action="feedback" method="post" id="current_form">
                 
-                <fieldset id="fieldset_question_demo2" class="container_radio_buttons"><p>What is your gender?</p>
+                <fieldset id="fieldset_question_demo2" class="container_radio_buttons"><p>What is your gender? (Optional)</p>
                     <label><textarea id="gender" name="question_gender" style="height: 25px"></textarea></label>
                 </fieldset>
 
@@ -386,12 +386,74 @@
                         </tr>
 
                         <tr>
-                            <td width="580" class="question" id="qdemo-often-cr">Used AI-assisted tools such as Codex, ChatGPT, etc.</td>
+                            <td width="580" class="question" id="qdemo-often-cr">Used AI-assisted tools such as Codex, ChatGPT, Github Copilot, etc.</td>
                             <td><label for="qdemo-often-ai1"><input type="radio" value="1" name="often-ai" id="qdemo-often-ai1" required="true"/></label></td>
                             <td><label for="qdemo-often-ai2"><input type="radio" value="2" name="often-ai" id="qdemo-often-ai2" required="true"/></label></td>
                             <td><label for="qdemo-often-ai3"><input type="radio" value="3" name="often-ai" id="qdemo-often-ai3" required="true"/></label></td>
                             <td><label for="qdemo-often-ai4"><input type="radio" value="4" name="often-ai" id="qdemo-often-ai4" required="true"/></label></td>
                             <td><label for="qdemo-often-ai5"><input type="radio" value="5" name="often-ai" id="qdemo-often-ai5" required="true"/></label></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </fieldset>
+
+                <fieldset id="fieldset_question_often" class="container_radio_buttons"><p>Please rate your experience considering your motivation and task difficulty during the task using the following scale: </p>
+                    <table class="striped-columns border">
+                        <tbody>
+                        <tr>
+                            <th class="question"></th>
+                            <th class="option">Strongly Disagree</th>
+                            <th class="option">Disagree</th>
+                            <th class="option">Neutral</th>
+                            <th class="option">Agree</th>
+                            <th class="option">Strongly Agree</th>
+                            <th class="option">I don't know</th>
+                            <th class="option">Not Applicable</th>
+                        </tr>
+
+                        <tr>
+                            <td width="580" class="question" id="qmotiv-que1">I was highly motivated to complete the task.</td>
+                            <td><label for="qmotiv-1-1"><input type="radio" value="1" name="motiv-que1" id="qmotiv-1-1" required="true"/></label></td>
+                            <td><label for="qmotiv-1-2"><input type="radio" value="2" name="motiv-que1" id="qmotiv-1-2" required="true"/></label></td>
+                            <td><label for="qmotiv-1-3"><input type="radio" value="3" name="motiv-que1" id="qmotiv-1-3" required="true"/></label></td>
+                            <td><label for="qmotiv-1-4"><input type="radio" value="4" name="motiv-que1" id="qmotiv-1-4" required="true"/></label></td>
+                            <td><label for="qmotiv-1-5"><input type="radio" value="5" name="motiv-que1" id="qmotiv-1-5" required="true"/></label></td>
+                            <td><label for="qmotiv-1-6"><input type="radio" value="6" name="motiv-que1" id="qmotiv-1-6" required="true"/></label></td>
+                            <td><label for="qmotiv-1-7"><input type="radio" value="7" name="motiv-que1" id="qmotiv-1-7" required="true"/></label></td>
+                        </tr>
+
+                        <tr>
+                            <td width="580" class="question" id="qmotiv-que2">The task was challenging in nature</td>
+                            <td><label for="qmotiv-que2-1"><input type="radio" value="1" name="motiv-que2" id="qmotiv-que2-1" required="true"/></label></td>
+                            <td><label for="qmotiv-que2-2"><input type="radio" value="2" name="motiv-que2" id="qmotiv-que2-2" required="true"/></label></td>
+                            <td><label for="qmotiv-que2-3"><input type="radio" value="3" name="motiv-que2" id="qmotiv-que2-3" required="true"/></label></td>
+                            <td><label for="qmotiv-que2-4"><input type="radio" value="4" name="motiv-que2" id="qmotiv-que2-4" required="true"/></label></td>
+                            <td><label for="qmotiv-que2-5"><input type="radio" value="5" name="motiv-que2" id="qmotiv-que2-5" required="true"/></label></td>
+                            <td><label for="qmotiv-que2-6"><input type="radio" value="6" name="motiv-que2" id="qmotiv-que2-6" required="true"/></label></td>
+                            <td><label for="qmotiv-que2-7"><input type="radio" value="7" name="motiv-que2" id="qmotiv-que2-7" required="true"/></label></td>
+                        </tr>
+
+                        <tr>
+                            <td width="580" class="question" id="qmotiv-que3">I found the task to be difficult to accomplish.</td>
+                            <td><label for="qmotiv-que3-1"><input type="radio" value="1" name="motiv-que3" id="qmotiv-que3-1" required="true"/></label></td>
+                            <td><label for="qmotiv-que3-2"><input type="radio" value="2" name="motiv-que3" id="qmotiv-que3-2" required="true"/></label></td>
+                            <td><label for="qmotiv-que3-3"><input type="radio" value="3" name="motiv-que3" id="qmotiv-que3-3" required="true"/></label></td>
+                            <td><label for="qmotiv-que3-4"><input type="radio" value="4" name="motiv-que3" id="qmotiv-que3-4" required="true"/></label></td>
+                            <td><label for="qmotiv-que3-5"><input type="radio" value="5" name="motiv-que3" id="qmotiv-que3-5" required="true"/></label></td>
+                            <td><label for="qmotiv-que3-6"><input type="radio" value="6" name="motiv-que3" id="qmotiv-que3-6" required="true"/></label></td>
+                            <td><label for="qmotiv-que3-7"><input type="radio" value="7" name="motiv-que3" id="qmotiv-que3-7" required="true"/></label></td>
+                        </tr>
+
+                        <tr>
+                            <td width="580" class="question" id="qmotiv-que4">I had no interest in performing well in the task.</td>
+                            <td><label for="qmotiv-que4-1"><input type="radio" value="1" name="motiv-que4" id="qmotiv-que4-1" required="true"/></label></td>
+                            <td><label for="qmotiv-que4-2"><input type="radio" value="2" name="motiv-que4" id="qmotiv-que4-2" required="true"/></label></td>
+                            <td><label for="qmotiv-que4-3"><input type="radio" value="3" name="motiv-que4" id="qmotiv-que4-3" required="true"/></label></td>
+                            <td><label for="qmotiv-que4-4"><input type="radio" value="4" name="motiv-que4" id="qmotiv-que4-4" required="true"/></label></td>
+                            <td><label for="qmotiv-que4-5"><input type="radio" value="5" name="motiv-que4" id="qmotiv-que4-5" required="true"/></label></td>
+                            <td><label for="qmotiv-que4-6"><input type="radio" value="6" name="motiv-que4" id="qmotiv-que4-6" required="true"/></label></td>
+                            <td><label for="qmotiv-que4-7"><input type="radio" value="7" name="motiv-que4" id="qmotiv-que4-7" required="true"/></label></td>
                         </tr>
 
                         </tbody>

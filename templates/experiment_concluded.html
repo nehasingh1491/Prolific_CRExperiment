@@ -6,9 +6,9 @@
      <p>Please answer the following questions after having concluded the experiment:</p><br>
      <form action="dem_que" method="post" id="current_form">
         
-        {% if data == "Alice" %}
+        {% if data == "Timothy (Tim)" %}
             <fieldset id="fieldset_post_experiment_que1_1" class="container_radio_buttons">
-                <p>How much did your decision get influenced by the fact that the suggested fix was authored by a human instead of AI?<br>
+                <p>In today's context, where Artificial Intelligence (AI) generates automatic fixes for review comments, to what extent was your decision to accept/decline a code suggestion influenced by the fact that the suggested fix was authored by a human instead of AI?</p><br>
                 <label><input type="radio" name="question_agree" id="question_agree_a0" value="0" class="option-input radio" required>Not at all influenced</label><br>
                 <label><input type="radio" name="question_agree" id="question_agree_a1" value="1" class="option-input radio">Slightly influenced</label><br>
                 <label><input type="radio" name="question_agree" id="question_agree_a2" value="2" class="option-input radio">Moderately influenced</label><br>
@@ -17,7 +17,7 @@
             </fieldset>
         {% else -%}
             <fieldset id="fieldset_post_experiment_que1_2" class="container_radio_buttons">
-                <p> How much did your decision get influenced by the fact that the suggested fix was authored by a AI instead of Human? <br>
+                <p>How much did your decision to accept/decline a code suggestion get influenced by the fact that the suggested fix was authored by an AI instead of Human?<br>
                 <label><input type="radio" name="question_agree" id="question_agree1_a0" value="0" class="option-input radio" required>Not at all influenced</label><br>
                 <label><input type="radio" name="question_agree" id="question_agree1_a1" value="1" class="option-input radio">Slightly influenced</label><br>
                 <label><input type="radio" name="question_agree" id="question_agree1_a2" value="2" class="option-input radio">Moderately influenced</label><br>
@@ -27,7 +27,7 @@
         {% endif %}
             
         <br>
-        <fieldset id="fieldset_post_experiment_que2" class="container_textarea"><p> Please ellaborate your answer? <br>
+        <fieldset id="fieldset_post_experiment_que2" class="container_textarea"><p> Please elaborate your answer. <br>
             <label><textarea id="post_experiment_que2" name="post_experiment_que2" style="height: 50px; width: 100%;" required></textarea></label>
         </fieldset>
         <br>

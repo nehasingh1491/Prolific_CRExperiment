@@ -128,15 +128,16 @@ function makeTextArea(user, user_comment, codesugg_user, elementId){
 	var headerdiv = document.createElement("div");
 	headerdiv.id = "commentUser";
 	var img = headerdiv.appendChild(document.createElement("img"));
-	if(user == "Alice"){
-		img.src = "/static/human_avatar.png";
-	}else if(user == "Bot"){
+	if(user == "Timothy (Tim)"){
+		//img.src = "/static/human_avatar.png";
+		img.src = "/static/tim_photo.jpg";
+	}else if(user == "Generative AI Bot"){
 		img.src = "/static/bot_avatar.png";
 	}
 	img.alt = "User Avatar";
 	img.className = "avatar";
-	img.style.width = "30px";
-	img.style.height = "30px";
+	img.style.width = "35px";
+	img.style.height = "35px";
 	img.style.borderRadius = "55%";
 	var username = headerdiv.appendChild(document.createElement("span"));
 	username.innerHTML = user;
@@ -168,15 +169,16 @@ function makeTextArea(user, user_comment, codesugg_user, elementId){
 	headerdiv_sugg.id = "innerBox"
 	var img1 = headerdiv_sugg.appendChild(document.createElement("img"));
 	logData("codesugg_user", codesugg_user);
-	if(codesugg_user == "Alice"){
-		img1.src = "/static/human_avatar.png";
-	}else if(codesugg_user == "Bot"){
+	if(codesugg_user == "Timothy (Tim)"){
+		//img1.src = "/static/human_avatar.png";
+		img1.src = "/static/tim_photo.jpg";
+	}else if(codesugg_user == "Generative AI Bot"){
 		img1.src = "/static/bot_avatar.png";
 	}
 	img1.alt = "User Avatar";
 	img1.className = "avatar";
-	img1.style.width = "30px";
-	img1.style.height = "30px";
+	img1.style.width = "35px";
+	img1.style.height = "35px";
 	img1.style.borderRadius = "55%";
 	var username = headerdiv_sugg.appendChild(document.createElement("span"));
 	username.className = "username";

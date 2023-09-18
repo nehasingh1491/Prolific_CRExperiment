@@ -4,6 +4,7 @@
     <link rel="stylesheet" media="all" href="{{ url_for('static', filename='css/style.css')}}" />
   	<!-- Requires jQuery -->
 	<script src="{{ url_for('static', filename='js/jquery.min.js')}}" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-browser/0.1.0/jquery.browser.min.js"></script>
 
     <script>
         $(document).ready(function(){
@@ -50,6 +51,9 @@
                 var other = document.getElementById("donation_to_6");
                 $(other).val(textarea.value)
             }
+            var browser = document.getElementById("browser_details");
+            const browserdetails = $.browser.name + $.browser.versionNumber + $.browser.platform;
+            $(browser).val(browserdetails)
         }
 
         const currentTimeInMilliseconds=Date.now();
@@ -61,51 +65,48 @@
         <form action="experiment" method="post" id="my-form">
         	<div style="padding-bottom:2px;">
             <p>Dear participant,</p>
-                <p>We are researchers investigating ways to improve <strong>code review</strong>. We would appreciate it if you could participate in our experiment to help us in our research study.</p>
+                <p>We are researchers investigating ways to improve <strong>code review</strong>. We would appreciate it, if you could participate in our experiment to help us in our research study.</p>
             <p></p>
 
             <p>In this experiment:</p>
             <ul>
                 <li>We ask you to perform <strong>one code review</strong>.</li> <br>
-                <li>As an appreciation of your help, <strong>we donate 5 USD</strong> to a non-profit organization on your behalf.</li><br>
+                <li>As an appreciation of your help <strong>we donate 5 USD</strong> to a non-profit organization on your behalf.</li><br>
                 <li><strong>Python knowledge is required</strong>.</li><br>
-                <li>Your data is collected and used in <strong>anonymized</strong> form. Hence, we cannot link your answers back to you.</li>
+                <li>Your data is collected and used in an <strong>anonymized</strong> form. Hence, we cannot link your answers back to you.</li>
             </ul>
             </div>
 
-            <!-- <fieldset id="fieldset_question_0" class="container_radio_buttons">
-            <h3>Donation on your behalf</h3>
-                <p>As mentioned above, to thank you for your participation in the experiment, we are going to donate 5 USD (or its equivalent) to a non-profit organization on your behalf.</p>
-
-                <p>We will make the donation only on behalf of participants whose experiment is valid and complete. We will make all donations at the end of the study.</p>
-
-                <p> Please select the organization you prefer:</p>
-                <label><input type="radio" name="donation_to" id="donation_to_0" value="0" class="option-input radio" required>[Charity 1]</label><br>
-                <label><input type="radio" name="donation_to" id="donation_to_1" value="1" class="option-input radio">[Charity 2]</label><br>
-                <label><input type="radio" name="donation_to" id="donation_to_2" value="2" class="option-input radio">[Charity 3]</label><br>
-                 <label><input type="radio" name="donation_to" id="donation_to_3" value="3" class="option-input radio">[Charity 4]</label><br>
-                <label><input type="radio" name="donation_to" id="donation_to_4" value="4" class="option-input radio">[Charity 5]</label><br>
-                <label><input type="radio" name="donation_to" id="donation_to_5" value="5" class="option-input radio">[Charity 6]</label><br>
-                <label><input type="radio" name="donation_to" id="donation_to_6" value="6" class="option-input radio">Other(*) - Write in <textarea name="donation_to" id="donation_to_6_text" style="height: 30px; vertical-align: middle; margin-top: 0;"></textarea></label><br>
-
-                <p>(*) We reserve the right to not accept the organization you specify, in case the organization's mission does not align with the ethical values of our research team or it is not possible to make a donation to this organization. <br>
-                In this case, we will donate the amount to one of the first five organizations at random.</p>
-
-            </fieldset> -->
-
-            <div style="border: 1px solid;background-color: beige; padding-left: 20px; padding-right: 20px;margin-left: 20px;margin-right: 20px;text-align: justify;">
+            <!-- <div style="border: 1px solid;background-color: beige; padding-left: 20px; padding-right: 20px;text-align: justify;">
                 <h3>What is code review?</h3>
                 <p>Code review involves an informal and lightweight process that centers on examining new proposed code changes instead of the entire codebase.</p>
                 <p>It serves as a valuable tool for identifying defects and enhancing the overall quality of software projects.</p>
-                <!-- <p>Code review is the process of examining and analyzing a piece of code written by another developer to identify issues, provide feedback, and ensure that the code follows best practices. </p>
-                <p>As a reviewer, your role is to carefully go through the code, understand its functionality, and assess whether it meets coding standards, is efficient, and doesn't contain bugs. This helps maintain code quality, catch potential problems early, and promote collaboration among team members. Your feedback aims to improve the code's readability, maintainability, and overall reliability.</p> -->
                 <br>
-            </div><br>
-            
+            </div><br> -->
+            <input type="hidden" name="browser_details" id="browser_details">
+
+            <fieldset id="fieldset_question_0" class="container_radio_buttons">
+            <h3>Donation on your behalf</h3>
+                <p>As mentioned above, to thank you for participating in the experiment, we will donate 5 USD (or its equivalent) to a non-profit organization on your behalf.</p>
+
+                <p>We will donate only on behalf of participants whose experiment is valid and complete. We will make all donations at the end of the study.</p>
+
+                <p> Please select the organization you prefer:</p>
+                <label><input type="radio" name="donation_to" id="donation_to_0" value="0" class="option-input radio" required>Rights Tech Women</label><br>
+                <label><input type="radio" name="donation_to" id="donation_to_1" value="1" class="option-input radio">UN Crisis Relief Fund</label><br>
+                <label><input type="radio" name="donation_to" id="donation_to_2" value="2" class="option-input radio">Women's World Summit Foundation (WWSF)</label><br>
+                 <label><input type="radio" name="donation_to" id="donation_to_3" value="3" class="option-input radio">One Tree Planted</label><br>
+                <label><input type="radio" name="donation_to" id="donation_to_4" value="4" class="option-input radio">Open Science Foundation</label><br>
+                <label><input type="radio" name="donation_to" id="donation_to_6" value="6" class="option-input radio">Other(*) - Write in <textarea name="donation_to" id="donation_to_6_text" style="height: 30px; vertical-align: middle; margin-top: 0;"></textarea></label><br>
+
+                <p>(*) We reserve the right to not accept the organization you specify if its mission does not align with our research team's ethical values or if it is not feasible to make a donation to that organization. In such cases, we will randomly select one of the first five organizations to receive the donation.</p>
+
+            </fieldset>
+            <br>
             <label><input type="radio" name="data_policy" id="data_policy_yes" value="0" class="option-input radio" required>I agree with the <a href="{{url_for('data_policy')}}" target="_blank">data handling policy</a></label><br><br>
 
             <p>Thank you and we hope you will enjoy participating in our study!</p>
-            <p>Prof Alberto Bacchelli, Francesco Sovrano, Neha Singh</p><br>
+            <p>Neha Singh, Francesco Sovrano, Alberto Bacchelli</p><br>
 
             <p>Please contact Neha Singh(neha.singh2@uzh.ch) if you encounter any problem with the experiment.</p>
             <br>
