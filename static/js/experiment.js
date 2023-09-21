@@ -477,6 +477,7 @@ function openCommentBox(instance, lineNumber, gutter, clickEvent){
       lineNumbers: true,
 	  firstLineNumber: comment_lineNumber,
 	  theme: "MyCustomEditor",
+	  readOnly: true,
     });
     myCodeMirror.setValue(code); // Set the initial code in the editor
 
