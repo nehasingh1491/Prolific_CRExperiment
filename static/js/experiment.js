@@ -8,6 +8,8 @@ $(window).on("load", function(){
     $("#review-completed").click(function () {
         logData("pageClosed", "pageClosed");
 		logData("hiddenCommitDec", document.getElementById("hiddenCommitDec").value);
+		var currentDate = new Date();
+		logData("end_time", currentDate.toLocaleString());
 
         var data = {
             'data': log_records

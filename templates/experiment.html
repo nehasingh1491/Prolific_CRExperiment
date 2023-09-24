@@ -27,6 +27,8 @@
     </style>
 
     <script type="text/javascript">
+        var currentDate = new Date();
+
         $(document).ready(function () {
             logData("pageLoaded", "pageLoaded")
 
@@ -34,6 +36,7 @@
                 logData("start", "code_review_task_started")
                 $("#div-mergely").show();
                 $("#button-continue").hide();
+                logData("start_time",currentDate.toLocaleString())
                 logData("read_instructions", "read_instructions");
                 var width = $(window).width() - 50;
                 {% for code in codes %}
@@ -68,6 +71,7 @@
             $("#id02").hide();
             $("#postreview-questions").show();
             $(".mergely-resizer").css("pointer-events", "none");
+            $("#end_time").val(currentDate.toLocaleString())
         }
 
         function popup_confirm(){
@@ -176,7 +180,6 @@
 
         <div style="clear: both;">
             <button id="review-completed" /*onclick="document.getElementById('id01').style.display='block'"*/ onclick="popup_confirm()" class="button blue" style="height: 50px;">I have completed my review</button>
-            
         </div>
 
         <div style="clear: both; display: none" id="postreview-questions">
