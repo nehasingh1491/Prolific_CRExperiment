@@ -28,14 +28,14 @@ experiments_path = os.path.join("resources", "experiments")
 # Experiment2 test
 experiments_started = Counter()
 experiments_started['HumanCorr-control'] = 0
-experiments_started['HumanIncorr-test'] = 0
+#experiments_started['HumanIncorr-test'] = 0
 experiments_started['AICorr-test'] = 0
 experiments_started['AIInCorr-test'] = 0
 
 # Counters of how many experiments have concluded
 experiments_concluded = Counter()
 experiments_concluded['HumanCorr-control'] = 0
-experiments_concluded['HumanIncorr-test'] = 0
+#experiments_concluded['HumanIncorr-test'] = 0
 experiments_concluded['AICorr-test'] = 0
 experiments_concluded['AIInCorr-test'] = 0
 
