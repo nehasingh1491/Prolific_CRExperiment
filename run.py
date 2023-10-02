@@ -113,6 +113,14 @@ def index():
                                          title="Intro"))
     user_id = request.cookies.get('experiment-userid', None)
 
+    log_info = {
+        'User-Agent': request.user_agent.string,
+        'Request URL': request.url,
+        'Referrer': request.referrer
+    }
+
+    log_data(str(user_id), "start", json.dumps(log_info))
+
     if user_id is None:
         user_id = uuid.uuid4()
         resp.set_cookie('experiment-userid', str(user_id))
