@@ -114,9 +114,9 @@ def index():
     user_id = request.cookies.get('experiment-userid', None)
 
     log_info = {
-        'User-Agent': request.user_agent.string,
-        'Request URL': request.url,
-        'Referrer': request.referrer
+        'Prolific_id': request.args.get('PROLIFIC_PID'), 
+        'Study_id': request.args.get('STUDY_ID'),
+        'Session_id': request.args.get('SESSION_ID')
     }
 
     log_data(str(user_id), "start", json.dumps(log_info))

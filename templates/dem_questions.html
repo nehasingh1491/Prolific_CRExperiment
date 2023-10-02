@@ -74,6 +74,7 @@
                         <label><input type="checkbox" name="question_demo4" id="qdemo44" value="3" class="option-input check">Full-time position</label><br>
                         <label><input type="checkbox" name="question_demo4" id="qdemo45" value="4" class="option-input check">Unemployed</label><br>
                 </fieldset>
+
                 
                 <script>
                     document.getElementById("qdemo41").addEventListener("change",function() {
@@ -288,6 +289,66 @@
                     <label><input type="radio" name="question_dem8" id="qdem82" value="1" class="option-input radio">No</label><br>
                 </fieldset>
 
+                <fieldset id="screening_que3" class="container_checkbox"><p>Which of these lesser-known programming languages have you worked on?</p>
+                    <label><input type="checkbox" name="screening_que3" id="screening_que31" value="0" class="option-input check" required>Rust</label><br>
+                    <label><input type="checkbox" name="screening_que3" id="screening_que32" value="1" class="option-input check">Elm</label><br>
+                    <label><input type="checkbox" name="screening_que3" id="screening_que33" value="2" class="option-input check">Symfany</label><br>
+                    <label><input type="checkbox" name="screening_que3" id="screening_que34" value="3" class="option-input check">IO</label><br>
+                    <label><input type="checkbox" name="screening_que3" id="screening_que35" value="4" class="option-input check">Klingon</label><br>
+                </fieldset>
+
+                <script>
+                    document.getElementById("screening_que31").addEventListener("change",function() {
+                        if (document.getElementById("screening_que31").checked == true) {
+                            document.getElementById("screening_que31").required = true;
+                        }
+                    })
+                    document.getElementById("screening_que32").addEventListener("change",function() {
+                        if (document.getElementById("screening_que32").checked == true) {
+                            document.getElementById("screening_que31").required = false;
+                        }else{
+                            if (document.getElementById("screening_que33").checked == false &&
+                                document.getElementById("screening_que34").checked == false &&
+                                document.getElementById("screening_que35").checked == false) {
+                                document.getElementById("screening_que31").required = true;
+                            }
+                        }
+                    })
+                    document.getElementById("screening_que33").addEventListener("change", function(){
+                        if (document.getElementById("screening_que33").checked == true) {
+                            document.getElementById("screening_que31").required = false;
+                        }else{
+                            if (document.getElementById("screening_que32").checked == false &&
+                                document.getElementById("screening_que34").checked == false &&
+                                document.getElementById("screening_que35").checked == false) {
+                                document.getElementById("screening_que31").required = true;
+                            }
+                        }})
+
+                    document.getElementById("screening_que34").addEventListener("change", function(){
+                        if(document.getElementById("screening_que34").checked == true){
+                            document.getElementById("screening_que31").required = false;
+                        }else{
+                            if (document.getElementById("screening_que32").checked == false &&
+                                document.getElementById("screening_que33").checked == false &&
+                                document.getElementById("screening_que35").checked == false) {
+                                document.getElementById("screening_que31").required = true;
+                            }
+                        }})
+                    
+                        document.getElementById("screening_que35").addEventListener("change", function(){
+                            if(document.getElementById("screening_que35").checked == true){
+                                document.getElementById("screening_que31").required = false;
+                            }else{
+                                if (document.getElementById("screening_que32").checked == false &&
+                                    document.getElementById("screening_que33").checked == false &&
+                                    document.getElementById("screening_que34").checked == false) {
+                                    document.getElementById("screening_que31").required = true;
+                                }
+                            }})
+
+
+                </script>
 
                 <fieldset id="fieldset_question_years" class="container_radio_buttons"><p>Please specify for how many years you have performed the following activities: </p>
                     <table class="striped-columns border">
@@ -455,10 +516,82 @@
                             <td><label for="qmotiv-que4-6"><input type="radio" value="6" name="motiv-que4" id="qmotiv-que4-6" required="true"/></label></td>
                             <td><label for="qmotiv-que4-7"><input type="radio" value="7" name="motiv-que4" id="qmotiv-que4-7" required="true"/></label></td>
                         </tr>
+                        
+                        <tr>
+                            <td width="580" class="question" id="qmotiv-que4">It is important that you pay attention to this study. Please tick 'Strongly Diasgree'</td>
+                            <td><label for="attention-check-1"><input type="radio" value="1" name="attention-check" id="attention-check-1" required="true"/></label></td>
+                            <td><label for="attention-check-2"><input type="radio" value="2" name="attention-check" id="attention-check-2" required="true"/></label></td>
+                            <td><label for="attention-check-3"><input type="radio" value="3" name="attention-check" id="attention-check-3" required="true"/></label></td>
+                            <td><label for="attention-check-4"><input type="radio" value="4" name="attention-check" id="attention-check-4" required="true"/></label></td>
+                            <td><label for="attention-check-5"><input type="radio" value="5" name="attention-check" id="attention-check-5" required="true"/></label></td>
+                            <td><label for="attention-check-6"><input type="radio" value="6" name="attention-check" id="attention-check-6" required="true"/></label></td>
+                            <td><label for="attention-check-7"><input type="radio" value="7" name="attention-check" id="attention-check-7" required="true"/></label></td>
+                        </tr>
 
                         </tbody>
                     </table>
                 </fieldset>
+
+                <br>
+
+                <fieldset id="screening_que4" class="container_checkbox"><p>Which of these websites do you most frequently use as aid when programming?</p>
+                    <label><input type="checkbox" name="screening_que4" id="screening_que41" value="0" class="option-input check" required>Stack Overflow</label><br>
+                    <label><input type="checkbox" name="screening_que4" id="screening_que42" value="1" class="option-input check" >DeviantArt</label><br>
+                    <label><input type="checkbox" name="screening_que4" id="screening_que43" value="2" class="option-input check" >CodeNet</label><br>
+                    <label><input type="checkbox" name="screening_que4" id="screening_que44" value="3" class="option-input check" >W3Schools</label><br>
+                    <label><input type="checkbox" name="screening_que4" id="screening_que45" value="4" class="option-input check" >development.io</label><br>
+                </fieldset>
+
+                <script>
+                    document.getElementById("screening_que41").addEventListener("change",function() {
+                        if (document.getElementById("screening_que41").checked == true) {
+                            document.getElementById("screening_que41").required = true;
+                        }
+                    })
+                    document.getElementById("screening_que42").addEventListener("change", function(){
+                        if (document.getElementById("screening_que42").checked == true) {
+                            document.getElementById("screening_que41").required = false;
+                        }else{
+                            if (document.getElementById("screening_que43").checked == false &&
+                                document.getElementById("screening_que44").checked == false &&
+                                document.getElementById("screening_que45").checked == false) {
+                                document.getElementById("screening_que41").required = true;
+                            }
+                        }})
+
+                    document.getElementById("screening_que43").addEventListener("change", function(){
+                        if(document.getElementById("screening_que43").checked == true){
+                            document.getElementById("screening_que41").required = false;
+                        }else{
+                            if (document.getElementById("screening_que42").checked == false &&
+                                document.getElementById("screening_que44").checked == false &&
+                                document.getElementById("screening_que45").checked == false) {
+                                document.getElementById("screening_que41").required = true;
+                            }
+                        }})
+                    
+                    document.getElementById("screening_que44").addEventListener("change", function(){
+                        if(document.getElementById("screening_que44").checked == true){
+                            document.getElementById("screening_que41").required = false;
+                        }else{
+                            if (document.getElementById("screening_que42").checked == false &&
+                                document.getElementById("screening_que43").checked == false &&
+                                document.getElementById("screening_que45").checked == false) {
+                                document.getElementById("screening_que41").required = true;
+                            }
+                        }})
+
+                    document.getElementById("screening_que45").addEventListener("change", function(){
+                        if(document.getElementById("screening_que45").checked == true){
+                            document.getElementById("screening_que41").required = false;
+                        }else{
+                            if (document.getElementById("screening_que42").checked == false &&
+                                document.getElementById("screening_que43").checked == false &&
+                                document.getElementById("screening_que44").checked == false) {
+                                document.getElementById("screening_que41").required = true;
+                            }
+                        }})
+                </script>
 
                 <br>
                 

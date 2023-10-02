@@ -8,6 +8,21 @@
 		},
 		{
 			"path": "../Data_scraping"
+		},
+		{
+			"path": "../../Downloads/APPS"
+		},
+		{
+			"path": "../BugsInPy"
+		},
+		{
+			"path": "../../Downloads/Project_CodeNet_Python800"
+		},
+		{
+			"path": "../practice_workspace"
+		},
+		{
+			"path": "../React-Portfolio"
 		}
 	],
 	"settings": {}

@@ -1,0 +1,30 @@
+~~~~1L-BitCounter/src/main.py
+class BitCounter:
+    def parity(n):
+        result = 0
+        while n:
+            result ^= n & 1
+            n >>= 1
+        return result
+~~~~
+
+~~~~1R-BitCounter/src/main.py
+class BitCounter:
+    def parity(n):
+        result = 0
+        while n:
+            result ^= n & 1
+            n >>= 1
+        return result
+
+    def bitcount(n):
+        count = 0
+        while n:
+            n ^= n - 1
+            count += 1
+        return count
+*****Alice-Wrong Comparison Operator-54-0-1-3-Alice
+- n ^= n - 1
++ n &= n - 1
+*****
+~~~~
